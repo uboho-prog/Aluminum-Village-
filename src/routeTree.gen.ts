@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as DirectoryRouteImport } from './routes/directory'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
@@ -24,6 +25,11 @@ const MarketplaceRoute = MarketplaceRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DirectoryRoute = DirectoryRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/directory': typeof DirectoryRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/directory': typeof DirectoryRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/directory': typeof DirectoryRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRoute
 }
@@ -79,16 +88,25 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/directory'
+    | '/join'
     | '/login'
     | '/marketplace'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/directory' | '/login' | '/marketplace'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/directory'
+    | '/join'
+    | '/login'
+    | '/marketplace'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
     | '/directory'
+    | '/join'
     | '/login'
     | '/marketplace'
   fileRoutesById: FileRoutesById
@@ -98,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   DirectoryRoute: typeof DirectoryRoute
+  JoinRoute: typeof JoinRoute
   LoginRoute: typeof LoginRoute
   MarketplaceRoute: typeof MarketplaceRoute
 }
@@ -116,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/directory': {
@@ -154,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   DirectoryRoute: DirectoryRoute,
+  JoinRoute: JoinRoute,
   LoginRoute: LoginRoute,
   MarketplaceRoute: MarketplaceRoute,
 }
