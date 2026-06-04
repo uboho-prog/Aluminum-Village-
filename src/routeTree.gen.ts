@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as DirectoryRouteImport } from './routes/directory'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
 const MarketplaceRoute = MarketplaceRouteImport.update({
@@ -23,6 +24,11 @@ const DirectoryRoute = DirectoryRouteImport.update({
   path: '/directory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/directory': typeof DirectoryRoute
   '/marketplace': typeof MarketplaceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/directory': typeof DirectoryRoute
   '/marketplace': typeof MarketplaceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/directory': typeof DirectoryRoute
   '/marketplace': typeof MarketplaceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/directory' | '/marketplace'
+  fullPaths: '/' | '/about' | '/directory' | '/marketplace'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/directory' | '/marketplace'
-  id: '__root__' | '/' | '/directory' | '/marketplace'
+  to: '/' | '/about' | '/directory' | '/marketplace'
+  id: '__root__' | '/' | '/about' | '/directory' | '/marketplace'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   DirectoryRoute: typeof DirectoryRoute
   MarketplaceRoute: typeof MarketplaceRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DirectoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   DirectoryRoute: DirectoryRoute,
   MarketplaceRoute: MarketplaceRoute,
 }
