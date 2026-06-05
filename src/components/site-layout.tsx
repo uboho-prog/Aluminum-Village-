@@ -1,15 +1,67 @@
 import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { ShoppingCart, MessageCircle, X, Send } from "lucide-react";
+import { ShoppingCart, MessageCircle, X, Send, ChevronDown, Users, UserPlus } from "lucide-react";
 import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
 
-const nav = [
+const nav: { to: string; label: string }[] = [
   { to: "/", label: "Home" },
   { to: "/marketplace", label: "Marketplace" },
-  { to: "/directory", label: "Directory" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ];
+
+function DirectoryMenu() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <Link
+        to="/directory"
+        className="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground rounded-md hover:text-foreground hover:bg-secondary transition-colors"
+        activeProps={{ className: "text-brand bg-secondary" }}
+      >
+        Directory
+        <ChevronDown className={`size-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </Link>
+      <div
+        className={`absolute left-0 top-full pt-2 w-64 transition-all ${
+          open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-1"
+        }`}
+      >
+        <div className="rounded-lg border bg-card shadow-lg overflow-hidden">
+          <Link
+            to="/directory"
+            className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors"
+          >
+            <Users className="size-4 text-brand mt-0.5 shrink-0" />
+            <div>
+              <div className="text-sm font-semibold">Browse Professionals</div>
+              <div className="text-xs text-muted-foreground mt-0.5">
+                Access the verified directory
+              </div>
+            </div>
+          </Link>
+          <div className="border-t" />
+          <Link
+            to="/join"
+            className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors"
+          >
+            <UserPlus className="size-4 text-brand mt-0.5 shrink-0" />
+            <div>
+              <div className="text-sm font-semibold">Join as a Professional</div>
+              <div className="text-xs text-muted-foreground mt-0.5">
+                Register your business
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Logo({ withWordmark = false }: { withWordmark?: boolean }) {
   return (
@@ -51,13 +103,24 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <Logo />
           </Link>
           <nav className="hidden md:flex items-center gap-1">
-            {nav.map((n) => (
+            {nav.slice(0, 2).map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
                 className="px-3 py-2 text-sm font-medium text-muted-foreground rounded-md hover:text-foreground hover:bg-secondary transition-colors"
                 activeProps={{ className: "text-brand bg-secondary" }}
                 activeOptions={{ exact: n.to === "/" }}
+              >
+                {n.label}
+              </Link>
+            ))}
+            <DirectoryMenu />
+            {nav.slice(2).map((n) => (
+              <Link
+                key={n.to}
+                to={n.to}
+                className="px-3 py-2 text-sm font-medium text-muted-foreground rounded-md hover:text-foreground hover:bg-secondary transition-colors"
+                activeProps={{ className: "text-brand bg-secondary" }}
               >
                 {n.label}
               </Link>

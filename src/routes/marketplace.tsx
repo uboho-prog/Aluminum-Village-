@@ -1,7 +1,23 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { img } from "@/lib/images";
-import { BadgeCheck, ShieldCheck, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronRight as ChevronRt,
+  Search,
+  Ruler,
+  DoorOpen,
+  Grid3x3,
+  Square,
+  Frame,
+  BadgeCheck,
+  Wallet,
+  Layers,
+  Package,
+  Compass,
+} from "lucide-react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/marketplace")({
   head: () => ({
@@ -17,12 +33,23 @@ export const Route = createFileRoute("/marketplace")({
   component: Marketplace,
 });
 
+const categories = [
+  { id: "profiles", label: "Profiles & Extrusions", icon: Compass },
+  { id: "doors", label: "Doors", icon: DoorOpen },
+  { id: "gates", label: "Gates", icon: Grid3x3 },
+  { id: "windows", label: "Windows", icon: Square },
+  { id: "railings", label: "Railings", icon: Frame },
+];
+
+const alloyGrades = ["6061-T6", "6063-T5", "5052-H32", "7075 Aircraft"];
+const finishes = ["Mill Finish", "Anodized Silver", "Powder Coated"];
+const walls = ["0.5 - 1mm", "1 - 3mm", "3 - 5mm", "5mm+"];
+
 const items = [
   {
     img: img.prod1,
     badge: "IN STOCK",
-    title: "6061-T6 Industrial T-Slot Profile",
-    desc: "High-strength architectural extrusion for framing and modular automation systems.",
+    badgeTone: "emerald",
     grade: "6061-T6",
     wall: "3.2mm",
     finish: "Mill",
@@ -33,8 +60,7 @@ const items = [
   {
     img: img.prod2,
     badge: "BEST SELLER",
-    title: "5052 Marine Grade Square Tube",
-    desc: "Highly corrosion-resistant aluminium tube, perfect for nautical and coastal applications.",
+    badgeTone: "brand",
     grade: "5052",
     wall: "2.5mm",
     finish: "Brushed",
@@ -45,8 +71,7 @@ const items = [
   {
     img: img.prod3,
     badge: "",
-    title: "6063 Custom L-Angle Profile",
-    desc: "Architectural grade angle for structural support and visible trim work.",
+    badgeTone: "",
     grade: "6063",
     wall: "1.5mm",
     finish: "Anodized",
@@ -54,150 +79,306 @@ const items = [
     price: "$11.25",
     sub: "Anodized Silver",
   },
-  {
-    img: img.part1,
-    badge: "NEW",
-    title: "Standard Grade Partition Frame",
-    desc: "Versatile partition framing for office and retail interior systems.",
-    grade: "6063-T5",
-    wall: "1.8mm",
-    finish: "Powder",
-    qty: "Per Unit",
-    price: "$28.00",
-    sub: "Excl. Tax",
-  },
-  {
-    img: img.part2,
-    badge: "",
-    title: "Heavy Duty Industrial Frame",
-    desc: "Reinforced framing system for warehouse and shop-floor partitions.",
-    grade: "6061",
-    wall: "4.0mm",
-    finish: "Anodized",
-    qty: "Per Set",
-    price: "$120.00",
-    sub: "Per Set",
-  },
-  {
-    img: img.part3,
-    badge: "IN STOCK",
-    title: "Architectural Curtain Wall System",
-    desc: "Complete curtain wall framing with thermal break for commercial facades.",
-    grade: "6063-T6",
-    wall: "2.0mm",
-    finish: "PVDF",
-    qty: "Per Bay",
-    price: "$185.00",
-    sub: "Per m²",
-  },
 ];
 
 function Marketplace() {
+  const [activeCat, setActiveCat] = useState("profiles");
+  const [selectedGrades, setSelectedGrades] = useState<string[]>(["6061-T6", "6063-T5"]);
+  const [selectedFinish, setSelectedFinish] = useState<string[]>(["Anodized Silver"]);
+  const [wall, setWall] = useState("1 - 3mm");
+  const [cart, setCart] = useState<number[]>([]);
+  const [page, setPage] = useState(1);
+
+  const toggle = (
+    list: string[],
+    setList: (v: string[]) => void,
+    value: string,
+  ) => setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
+
   return (
     <SiteLayout>
-      <section className="border-b bg-secondary/40">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Profiles & Extrusions</h1>
-              <p className="text-muted-foreground mt-2">248 products found</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 rounded-md border bg-card px-3 py-2 w-64 max-w-full">
-                <Search className="size-4 text-muted-foreground" />
-                <input
-                  placeholder="Search products..."
-                  className="bg-transparent outline-none text-sm flex-1"
-                />
-              </div>
-              <select className="rounded-md border bg-card px-3 py-2 text-sm">
-                <option>Sort: Recommended</option>
-                <option>Price: Low to High</option>
-                <option>Newest First</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Link to="/" className="hover:text-foreground">Home</Link>
+          <ChevronRt className="size-3.5" />
+          <Link to="/marketplace" className="hover:text-foreground">Marketplace</Link>
+          <ChevronRt className="size-3.5" />
+          <span className="text-foreground font-medium">Profiles</span>
+        </nav>
 
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map((p) => (
-            <article key={p.title} className="rounded-xl border bg-card overflow-hidden flex flex-col">
-              <div className="relative aspect-[4/3] bg-secondary">
-                <img src={p.img} alt={p.title} className="size-full object-cover" />
-                {p.badge && (
-                  <span className="absolute top-3 left-3 rounded-full bg-accent text-accent-foreground text-[10px] font-bold tracking-wider px-2.5 py-1">
-                    {p.badge}
-                  </span>
-                )}
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="font-semibold leading-tight">{p.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1.5 line-clamp-2">{p.desc}</p>
-                <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                  {[
-                    ["Grade", p.grade],
-                    ["Wall", p.wall],
-                    ["Finish", p.finish],
-                    ["Qty", p.qty],
-                  ].map(([k, v]) => (
-                    <div key={k} className="flex items-center gap-1.5">
-                      <BadgeCheck className="size-3.5 text-accent" />
-                      <span className="text-muted-foreground">{k}:</span>
-                      <span className="font-medium">{v}</span>
-                    </div>
-                  ))}
-                </dl>
-                <div className="mt-5 flex items-end justify-between">
-                  <div>
-                    <div className="text-lg font-bold">{p.price}</div>
-                    <div className="text-[11px] text-muted-foreground">{p.sub}</div>
-                  </div>
-                  <button className="rounded-md bg-brand text-brand-foreground px-4 py-2 text-sm font-medium hover:opacity-90">
-                    Add to Cart
+        <div className="mt-6 grid lg:grid-cols-[260px_1fr] gap-8">
+          {/* Sidebar */}
+          <aside className="space-y-6">
+            {/* Categories */}
+            <div className="space-y-1">
+              {categories.map((c) => {
+                const Icon = c.icon;
+                const active = activeCat === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    onClick={() => setActiveCat(c.id)}
+                    className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition ${
+                      active
+                        ? "bg-brand/10 text-brand"
+                        : "text-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <Icon className="size-4" />
+                      {c.label}
+                    </span>
+                    <ChevronRight className="size-4 opacity-60" />
                   </button>
+                );
+              })}
+            </div>
+
+            {/* Filters */}
+            <div className="border-t pt-5">
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-bold tracking-wider text-muted-foreground uppercase">
+                  Filters
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedGrades([]);
+                    setSelectedFinish([]);
+                  }}
+                  className="text-xs font-semibold text-brand hover:underline"
+                >
+                  Clear
+                </button>
+              </div>
+
+              <div className="mt-5">
+                <div className="text-sm font-semibold mb-3">Alloy Grade</div>
+                <div className="space-y-2">
+                  {alloyGrades.map((g) => {
+                    const checked = selectedGrades.includes(g);
+                    return (
+                      <label
+                        key={g}
+                        className="flex items-center gap-2.5 text-sm cursor-pointer group"
+                      >
+                        <span
+                          className={`grid place-items-center size-4 rounded border transition ${
+                            checked
+                              ? "bg-brand border-brand text-brand-foreground"
+                              : "bg-card border-input group-hover:border-brand/50"
+                          }`}
+                        >
+                          {checked && (
+                            <svg viewBox="0 0 12 12" className="size-3 stroke-current" fill="none" strokeWidth="2">
+                              <path d="M2.5 6.5l2.5 2.5 4.5-5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          )}
+                        </span>
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={checked}
+                          onChange={() => toggle(selectedGrades, setSelectedGrades, g)}
+                        />
+                        {g}
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
-            </article>
-          ))}
-        </div>
 
-        <div className="mt-10 flex items-center justify-center gap-1">
-          <button className="grid place-items-center size-9 rounded-md border bg-card hover:bg-secondary">
-            <ChevronLeft className="size-4" />
-          </button>
-          {[1, 2, 3].map((n) => (
-            <button
-              key={n}
-              className={`size-9 rounded-md text-sm ${
-                n === 1
-                  ? "bg-primary text-primary-foreground"
-                  : "border bg-card hover:bg-secondary"
-              }`}
-            >
-              {n}
+              <div className="mt-6">
+                <div className="text-sm font-semibold mb-3">Finish Type</div>
+                <div className="space-y-2">
+                  {finishes.map((f) => {
+                    const checked = selectedFinish.includes(f);
+                    return (
+                      <label key={f} className="flex items-center gap-2.5 text-sm cursor-pointer group">
+                        <span
+                          className={`grid place-items-center size-4 rounded border transition ${
+                            checked
+                              ? "bg-brand border-brand text-brand-foreground"
+                              : "bg-card border-input group-hover:border-brand/50"
+                          }`}
+                        >
+                          {checked && (
+                            <svg viewBox="0 0 12 12" className="size-3 stroke-current" fill="none" strokeWidth="2">
+                              <path d="M2.5 6.5l2.5 2.5 4.5-5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          )}
+                        </span>
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={checked}
+                          onChange={() => toggle(selectedFinish, setSelectedFinish, f)}
+                        />
+                        {f}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <div className="text-sm font-semibold mb-3">Wall Thickness</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {walls.map((w) => (
+                    <button
+                      key={w}
+                      onClick={() => setWall(w)}
+                      className={`rounded-md border py-2 text-xs font-medium transition ${
+                        wall === w
+                          ? "border-brand bg-brand/10 text-brand"
+                          : "bg-card hover:border-brand/50"
+                      }`}
+                    >
+                      {w}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <button className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-brand text-brand-foreground px-4 py-2.5 text-sm font-semibold hover:bg-brand/90 active:scale-[0.99] transition">
+              <Wallet className="size-4" /> Request Quote
             </button>
-          ))}
-          <span className="px-2 text-muted-foreground">...</span>
-          <button className="size-9 rounded-md border bg-card text-sm hover:bg-secondary">
-            21
-          </button>
-          <button className="grid place-items-center size-9 rounded-md border bg-card hover:bg-secondary">
-            <ChevronRight className="size-4" />
-          </button>
-        </div>
+          </aside>
 
-        <div className="mt-12 rounded-xl border bg-card p-6 flex items-center gap-4">
-          <ShieldCheck className="size-8 text-accent shrink-0" />
+          {/* Main grid */}
           <div>
-            <div className="font-semibold">Escrow-protected payments</div>
-            <div className="text-sm text-muted-foreground">
-              Your funds are held securely until you confirm delivery and quality.
+            <div className="flex items-center justify-end gap-3">
+              <label className="text-sm text-muted-foreground">Sort:</label>
+              <div className="relative">
+                <select className="appearance-none rounded-md border bg-card pl-3 pr-9 py-2 text-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-brand/30">
+                  <option>Recommended</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
+                  <option>Newest First</option>
+                </select>
+                <ChevronRight className="size-4 absolute right-2 top-1/2 -translate-y-1/2 rotate-90 pointer-events-none text-muted-foreground" />
+              </div>
+            </div>
+
+            <div className="mt-6 grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              {items.map((p, i) => {
+                const inCart = cart.includes(i);
+                return (
+                  <article
+                    key={i}
+                    className="rounded-xl border bg-card overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-0.5 transition"
+                  >
+                    <div className="relative aspect-square bg-secondary overflow-hidden">
+                      <img
+                        src={p.img}
+                        alt=""
+                        className="size-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                      />
+                      {p.badge && (
+                        <span
+                          className={`absolute top-3 left-3 rounded-md text-[10px] font-bold tracking-wider px-2.5 py-1 ${
+                            p.badgeTone === "brand"
+                              ? "bg-brand text-brand-foreground"
+                              : "bg-emerald-500 text-white"
+                          }`}
+                        >
+                          {p.badge}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-4 flex flex-col flex-1">
+                      <div className="rounded-lg border bg-secondary/40 p-3 grid grid-cols-2 gap-2 text-[11px]">
+                        <Spec icon={BadgeCheck} k="Grade" v={p.grade} />
+                        <Spec icon={Ruler} k="Wall" v={p.wall} />
+                        <Spec icon={Layers} k="Finish" v={p.finish} />
+                        <Spec icon={Package} k="Qty" v={p.qty} />
+                      </div>
+                      <div className="mt-4 flex items-end justify-between gap-3">
+                        <div>
+                          <div className="text-xl font-bold leading-none">{p.price}</div>
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mt-1">
+                            {p.sub}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() =>
+                            setCart((c) => (c.includes(i) ? c.filter((x) => x !== i) : [...c, i]))
+                          }
+                          className={`rounded-md px-4 py-2 text-sm font-semibold active:scale-[0.98] transition ${
+                            inCart
+                              ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                              : "bg-brand text-brand-foreground hover:bg-brand/90"
+                          }`}
+                        >
+                          {inCart ? "Added ✓" : "Add to Cart"}
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            {/* Pagination */}
+            <div className="mt-10 flex items-center justify-center gap-1.5">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                className="grid place-items-center size-9 rounded-md border bg-card hover:bg-secondary disabled:opacity-40 active:scale-95 transition"
+                disabled={page === 1}
+              >
+                <ChevronLeft className="size-4" />
+              </button>
+              {[1, 2, 3].map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setPage(n)}
+                  className={`size-9 rounded-md text-sm font-medium transition active:scale-95 ${
+                    page === n
+                      ? "bg-brand text-brand-foreground"
+                      : "border bg-card hover:bg-secondary"
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+              <span className="px-2 text-muted-foreground">...</span>
+              <button
+                onClick={() => setPage(21)}
+                className={`size-9 rounded-md text-sm font-medium transition active:scale-95 ${
+                  page === 21 ? "bg-brand text-brand-foreground" : "border bg-card hover:bg-secondary"
+                }`}
+              >
+                21
+              </button>
+              <button
+                onClick={() => setPage((p) => Math.min(21, p + 1))}
+                className="grid place-items-center size-9 rounded-md border bg-card hover:bg-secondary active:scale-95 transition"
+              >
+                <ChevronRight className="size-4" />
+              </button>
             </div>
           </div>
         </div>
       </section>
     </SiteLayout>
+  );
+}
+
+function Spec({
+  icon: Icon,
+  k,
+  v,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  k: string;
+  v: string;
+}) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <Icon className="size-3.5 text-muted-foreground shrink-0" />
+      <span className="text-muted-foreground">{k}:</span>
+      <span className="font-semibold truncate">{v}</span>
+    </div>
   );
 }
