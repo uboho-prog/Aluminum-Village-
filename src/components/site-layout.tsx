@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { ShoppingCart, MessageCircle, X, Send } from "lucide-react";
+import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -9,46 +11,75 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ];
 
+function Logo({ withWordmark = false }: { withWordmark?: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <img src={logoAsset.url} alt="Aluminium Village" className="h-9 w-9 object-contain" />
+      {withWordmark && (
+        <span className="font-bold tracking-tight text-primary">ALUMINIUM VILLAGE</span>
+      )}
+    </div>
+  );
+}
+
 export function SiteLayout({ children }: { children: ReactNode }) {
+  const [cartCount] = useState(2);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState<{ from: "bot" | "user"; text: string }[]>([
+    { from: "bot", text: "Hello! How can I help you with your aluminium requirements today?" },
+  ]);
+  const [draft, setDraft] = useState("");
+
+  const sendMessage = (text: string) => {
+    const t = text.trim();
+    if (!t) return;
+    setMessages((m) => [...m, { from: "user", text: t }]);
+    setDraft("");
+    setTimeout(() => {
+      setMessages((m) => [
+        ...m,
+        { from: "bot", text: "Thanks — a Village specialist will reach out shortly." },
+      ]);
+    }, 600);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-md bg-primary text-primary-foreground font-bold">
-              AV
-            </div>
-            <div className="leading-tight">
-              <div className="text-sm font-semibold">Aluminium Village</div>
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Industrial Marketplace
-              </div>
-            </div>
+          <Link to="/" className="flex items-center" aria-label="Aluminium Village home">
+            <Logo />
           </Link>
           <nav className="hidden md:flex items-center gap-1">
             {nav.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
-                className="px-3 py-2 text-sm text-muted-foreground rounded-md hover:text-foreground hover:bg-secondary transition-colors"
-                activeProps={{ className: "text-foreground bg-secondary" }}
+                className="px-3 py-2 text-sm font-medium text-muted-foreground rounded-md hover:text-foreground hover:bg-secondary transition-colors"
+                activeProps={{ className: "text-brand bg-secondary" }}
+                activeOptions={{ exact: n.to === "/" }}
               >
                 {n.label}
               </Link>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex px-3 py-2 text-sm font-medium text-foreground hover:text-brand"
+          <div className="flex items-center gap-3">
+            <button
+              aria-label="Cart"
+              className="relative grid h-9 w-9 place-items-center rounded-md hover:bg-secondary transition-colors"
             >
-              Sign in
-            </Link>
+              <ShoppingCart className="size-5 text-foreground" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 grid h-4 min-w-4 place-items-center rounded-full bg-brand px-1 text-[10px] font-bold text-brand-foreground">
+                  {cartCount}
+                </span>
+              )}
+            </button>
             <Link
-              to="/join"
-              className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-medium text-brand-foreground hover:opacity-90"
+              to="/contact"
+              className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground hover:opacity-90 transition-opacity"
             >
-              Join
+              Request Quote
             </Link>
           </div>
         </div>
@@ -56,70 +87,136 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t bg-secondary/40 mt-16">
+      <footer className="border-t bg-card mt-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 grid gap-8 md:grid-cols-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <div className="grid h-9 w-9 place-items-center rounded-md bg-primary text-primary-foreground font-bold">
-                AV
-              </div>
-              <span className="font-semibold">Aluminium Village</span>
-            </div>
-            <p className="mt-3 text-sm text-muted-foreground max-w-xs">
-              Nigeria's first verified marketplace for aluminium products, fabricators, and
-              installers.
+          <div className="md:col-span-1">
+            <Logo />
+            <p className="mt-3 text-xs text-muted-foreground max-w-xs">
+              © {new Date().getFullYear()} Aluminium Village. Industrial Excellence. Redefining
+              Nigeria's aluminium supply chain with transparency and technology.
             </p>
           </div>
-          {[
-            {
-              title: "Marketplace",
-              links: [
-                ["Browse Products", "/marketplace"],
-                ["Directory", "/directory"],
-                ["Join as Pro", "/join"],
-              ],
-            },
-            {
-              title: "Company",
-              links: [
-                ["About", "/about"],
-                ["Contact", "/contact"],
-                ["Sign in", "/login"],
-              ],
-            },
-            {
-              title: "Trust & Safety",
-              links: [
-                ["Escrow Protection", "/about"],
-                ["Verification", "/join"],
-                ["Support", "/contact"],
-              ],
-            },
-          ].map((col) => (
-            <div key={col.title}>
-              <div className="text-sm font-semibold mb-3">{col.title}</div>
-              <ul className="space-y-2">
-                {col.links.map(([label, to]) => (
-                  <li key={label}>
-                    <Link
-                      to={to as string}
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="border-t">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 text-xs text-muted-foreground flex justify-between">
-            <span>© {new Date().getFullYear()} Aluminium Village. All rights reserved.</span>
-            <span>Lagos · Abuja · Port Harcourt</span>
+          <div>
+            <div className="text-sm font-semibold mb-3">Quick Links</div>
+            <ul className="space-y-2">
+              {[
+                ["Marketplace", "/marketplace"],
+                ["Business Directory", "/directory"],
+                ["Sustainability", "/about"],
+                ["Careers", "/about"],
+                ["Feedback", "/contact"],
+              ].map(([l, to]) => (
+                <li key={l}>
+                  <Link to={to as string} className="text-sm text-muted-foreground hover:text-foreground">
+                    {l}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div className="text-sm font-semibold mb-3">Support</div>
+            <ul className="space-y-2">
+              {[
+                ["Help Center", "/contact"],
+                ["Privacy Policy", "/about"],
+                ["Terms of Service", "/about"],
+                ["Shipping Info", "/about"],
+              ].map(([l, to]) => (
+                <li key={l}>
+                  <Link to={to as string} className="text-sm text-muted-foreground hover:text-foreground">
+                    {l}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div className="text-sm font-semibold mb-3">Stay Connected</div>
+            <p className="text-xs text-muted-foreground mb-3">
+              Lagos · Abuja · Port Harcourt
+            </p>
+            <Link
+              to="/join"
+              className="inline-flex rounded-md border bg-background px-3 py-2 text-xs font-medium hover:bg-secondary"
+            >
+              Join as a Pro
+            </Link>
           </div>
         </div>
       </footer>
+
+      {/* Floating chat widget */}
+      <div className="fixed bottom-5 right-5 z-50">
+        {chatOpen ? (
+          <div className="w-80 rounded-2xl border bg-card shadow-2xl overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-r from-brand to-accent px-4 py-3 flex items-center justify-between text-brand-foreground">
+              <div>
+                <div className="text-sm font-semibold">Village Support</div>
+                <div className="text-[10px] uppercase tracking-wider opacity-90 flex items-center gap-1">
+                  <span className="inline-block size-1.5 rounded-full bg-emerald-300" /> Online now
+                </div>
+              </div>
+              <button
+                onClick={() => setChatOpen(false)}
+                aria-label="Close chat"
+                className="p-1 rounded hover:bg-white/10"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+            <div className="bg-primary text-primary-foreground p-3 space-y-2 max-h-72 overflow-y-auto">
+              {messages.map((m, i) => (
+                <div
+                  key={i}
+                  className={`max-w-[85%] text-sm px-3 py-2 rounded-2xl ${
+                    m.from === "bot"
+                      ? "bg-white/10 rounded-bl-sm"
+                      : "ml-auto bg-brand text-brand-foreground rounded-br-sm"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              ))}
+              <button
+                onClick={() => sendMessage("I'm looking for industrial extrusions.")}
+                className="block ml-auto text-xs bg-brand/80 hover:bg-brand text-brand-foreground rounded-full px-3 py-1.5"
+              >
+                I'm looking for industrial extrusions.
+              </button>
+            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendMessage(draft);
+              }}
+              className="flex items-center gap-2 border-t bg-card px-3 py-2"
+            >
+              <input
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="Type your message..."
+                className="flex-1 bg-transparent outline-none text-sm py-1"
+              />
+              <button
+                type="submit"
+                aria-label="Send"
+                className="grid place-items-center size-8 rounded-full bg-brand text-brand-foreground hover:opacity-90"
+              >
+                <Send className="size-4" />
+              </button>
+            </form>
+          </div>
+        ) : (
+          <button
+            onClick={() => setChatOpen(true)}
+            aria-label="Open Village Support chat"
+            className="grid place-items-center size-14 rounded-full bg-brand text-brand-foreground shadow-xl hover:scale-105 transition-transform"
+          >
+            <MessageCircle className="size-6" />
+          </button>
+        )}
+      </div>
     </div>
   );
 }
