@@ -103,13 +103,24 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <Logo />
           </Link>
           <nav className="hidden md:flex items-center gap-1">
-            {nav.map((n) => (
+            {nav.slice(0, 2).map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
                 className="px-3 py-2 text-sm font-medium text-muted-foreground rounded-md hover:text-foreground hover:bg-secondary transition-colors"
                 activeProps={{ className: "text-brand bg-secondary" }}
                 activeOptions={{ exact: n.to === "/" }}
+              >
+                {n.label}
+              </Link>
+            ))}
+            <DirectoryMenu />
+            {nav.slice(2).map((n) => (
+              <Link
+                key={n.to}
+                to={n.to}
+                className="px-3 py-2 text-sm font-medium text-muted-foreground rounded-md hover:text-foreground hover:bg-secondary transition-colors"
+                activeProps={{ className: "text-brand bg-secondary" }}
               >
                 {n.label}
               </Link>
