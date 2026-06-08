@@ -54,7 +54,7 @@ const items = [
     wall: "3.2mm",
     finish: "Mill",
     qty: "Per Meter",
-    price: "$14.50",
+    price: "₦21,750",
     sub: "Excl. Tax",
   },
   {
@@ -65,7 +65,7 @@ const items = [
     wall: "2.5mm",
     finish: "Brushed",
     qty: "Per Pc",
-    price: "$82.00",
+    price: "₦123,000",
     sub: "Per 6m Length",
   },
   {
@@ -76,7 +76,7 @@ const items = [
     wall: "1.5mm",
     finish: "Anodized",
     qty: "Per Meter",
-    price: "$11.25",
+    price: "₦16,875",
     sub: "Anodized Silver",
   },
 ];
