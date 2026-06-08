@@ -127,7 +127,8 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <div className="flex items-center gap-3">
-            <button
+            <Link
+              to="/checkout"
               aria-label="Cart"
               className="relative grid h-9 w-9 place-items-center rounded-md hover:bg-secondary transition-colors"
             >
@@ -137,7 +138,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                   {cartCount}
                 </span>
               )}
-            </button>
+            </Link>
             <Link
               to="/contact"
               className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground hover:opacity-90 transition-opacity"
