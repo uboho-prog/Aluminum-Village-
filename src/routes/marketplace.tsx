@@ -43,7 +43,7 @@ const categories = [
 
 const alloyGrades = ["6061-T6", "6063-T5", "5052-H32", "7075 Aircraft"];
 const finishes = ["Mill Finish", "Anodized Silver", "Powder Coated"];
-const walls = ["0.5 - 1mm", "1 - 3mm", "3 - 5mm", "5mm+"];
+
 
 const items = [
   {
@@ -85,7 +85,7 @@ function Marketplace() {
   const [activeCat, setActiveCat] = useState("profiles");
   const [selectedGrades, setSelectedGrades] = useState<string[]>(["6061-T6", "6063-T5"]);
   const [selectedFinish, setSelectedFinish] = useState<string[]>(["Anodized Silver"]);
-  const [wall, setWall] = useState("1 - 3mm");
+  const [wall, setWall] = useState(2.5);
   const [cart, setCart] = useState<number[]>([]);
   const [page, setPage] = useState(1);
 
@@ -222,21 +222,87 @@ function Marketplace() {
               </div>
 
               <div className="mt-6">
-                <div className="text-sm font-semibold mb-3">Wall Thickness</div>
-                <div className="grid grid-cols-2 gap-2">
-                  {walls.map((w) => (
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-sm font-semibold">Wall Thickness</div>
+                  <div className="inline-flex items-baseline gap-0.5 rounded-md bg-brand/10 text-brand px-2 py-0.5 font-mono text-xs font-bold tabular-nums">
+                    {wall.toFixed(1)}<span className="text-[10px] opacity-70">mm</span>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border bg-card p-3">
+                  {/* Tick meter */}
+                  <div className="relative h-6 mb-1.5" aria-hidden>
+                    <div className="absolute inset-x-0 bottom-0 flex justify-between">
+                      {Array.from({ length: 101 }).map((_, i) => {
+                        const major = i % 10 === 0;
+                        const mid = i % 5 === 0;
+                        const active = i / 10 <= wall;
+                        return (
+                          <span
+                            key={i}
+                            className={`w-px ${major ? "h-5" : mid ? "h-3" : "h-1.5"} ${
+                              active ? "bg-brand" : "bg-muted-foreground/30"
+                            }`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <input
+                    type="range"
+                    min={0}
+                    max={10}
+                    step={0.1}
+                    value={wall}
+                    onChange={(e) => setWall(parseFloat(e.target.value))}
+                    className="w-full h-1.5 appearance-none rounded-full bg-secondary accent-brand cursor-pointer
+                      [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:size-4
+                      [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand
+                      [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background
+                      [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:transition
+                      hover:[&::-webkit-slider-thumb]:scale-110
+                      [&::-moz-range-thumb]:size-4 [&::-moz-range-thumb]:rounded-full
+                      [&::-moz-range-thumb]:bg-brand [&::-moz-range-thumb]:border-2
+                      [&::-moz-range-thumb]:border-background [&::-moz-range-thumb]:shadow-md"
+                  />
+
+                  <div className="mt-2 flex justify-between text-[10px] font-mono text-muted-foreground tabular-nums">
+                    <span>0.0</span>
+                    <span>2.5</span>
+                    <span>5.0</span>
+                    <span>7.5</span>
+                    <span>10.0</span>
+                  </div>
+
+                  <div className="mt-3 flex items-center gap-1.5">
                     <button
-                      key={w}
-                      onClick={() => setWall(w)}
-                      className={`rounded-md border py-2 text-xs font-medium transition ${
-                        wall === w
-                          ? "border-brand bg-brand/10 text-brand"
-                          : "bg-card hover:border-brand/50"
-                      }`}
+                      onClick={() => setWall((w) => Math.max(0, +(w - 0.1).toFixed(1)))}
+                      className="grid place-items-center size-7 rounded-md border bg-card hover:bg-secondary active:scale-95 transition text-sm font-bold"
+                      aria-label="Decrease 0.1mm"
                     >
-                      {w}
+                      −
                     </button>
-                  ))}
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      value={wall.toFixed(1)}
+                      onChange={(e) => {
+                        const v = parseFloat(e.target.value);
+                        if (!isNaN(v)) setWall(Math.min(10, Math.max(0, v)));
+                      }}
+                      className="flex-1 h-7 rounded-md border bg-card px-2 text-xs font-mono font-semibold text-center tabular-nums focus:outline-none focus:ring-2 focus:ring-brand/30"
+                    />
+                    <button
+                      onClick={() => setWall((w) => Math.min(10, +(w + 0.1).toFixed(1)))}
+                      className="grid place-items-center size-7 rounded-md border bg-card hover:bg-secondary active:scale-95 transition text-sm font-bold"
+                      aria-label="Increase 0.1mm"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
