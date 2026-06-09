@@ -121,7 +121,10 @@ function Login() {
               </div>
 
               <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSignIn();
+                }}
                 className="space-y-4"
               >
                 <div>
