@@ -1,7 +1,8 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { ShoppingCart, MessageCircle, X, Send, ChevronDown, Users, UserPlus } from "lucide-react";
+import { ShoppingCart, MessageCircle, X, Send, ChevronDown, Users, UserPlus, User, LayoutDashboard, Package, Heart, LogOut, LogIn } from "lucide-react";
 import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
+import { useAuthUser, setAuthUser } from "@/lib/auth-store";
 
 const nav: { to: string; label: string }[] = [
   { to: "/", label: "Home" },
