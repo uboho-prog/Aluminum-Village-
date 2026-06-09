@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CreditCard,
   Landmark,
@@ -11,7 +11,9 @@ import {
   Shield,
   Headphones,
   Check,
+  LogIn,
 } from "lucide-react";
+import { useAuthUser } from "@/lib/auth-store";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -38,6 +40,46 @@ function Checkout() {
   const [pay, setPay] = useState("card");
   const [createAcct, setCreateAcct] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const user = useAuthUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setAuthChecked(true);
+  }, []);
+
+  if (authChecked && !user) {
+    return (
+      <SiteLayout>
+        <section className="mx-auto max-w-md px-4 sm:px-6 py-20">
+          <div className="rounded-2xl border bg-card p-8 text-center shadow-sm">
+            <div className="mx-auto grid place-items-center size-14 rounded-full bg-brand/10 text-brand">
+              <Lock className="size-6" />
+            </div>
+            <h1 className="mt-5 text-2xl font-bold tracking-tight">Sign in to continue</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              You need an account to complete checkout. Sign in or create one to keep your order
+              history, tracking, and saved items in one place.
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/login", search: { redirect: "/checkout" } })}
+              className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-md bg-brand text-brand-foreground py-3 text-sm font-semibold hover:bg-brand/90 active:scale-[0.99] transition"
+            >
+              <LogIn className="size-4" />
+              Sign in to checkout
+            </button>
+            <Link
+              to="/join"
+              className="mt-3 block text-xs font-semibold text-brand hover:underline"
+            >
+              Create an account
+            </Link>
+          </div>
+        </section>
+      </SiteLayout>
+    );
+  }
 
   return (
     <SiteLayout>
