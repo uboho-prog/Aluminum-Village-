@@ -64,8 +64,121 @@ function DirectoryMenu() {
   );
 }
 
+function AccountMenu() {
+  const [open, setOpen] = useState(false);
+  const user = useAuthUser();
+  const navigate = useNavigate();
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-2 text-sm font-medium hover:bg-secondary hover:border-brand/40 active:scale-[0.98] transition-colors"
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <User className="size-4" />
+        <span className="hidden sm:inline">{user ? `Hi, ${user.name}` : "Account"}</span>
+        <ChevronDown className={`size-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <div
+        className={`absolute right-0 top-full pt-2 w-64 z-50 transition-all ${
+          open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-1"
+        }`}
+      >
+        <div className="rounded-lg border bg-card shadow-lg overflow-hidden">
+          {user ? (
+            <>
+              <div className="px-4 py-3 bg-secondary/50 border-b">
+                <div className="text-sm font-semibold">Hi, {user.name}</div>
+                <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+              </div>
+              <MenuLink to="/about" icon={LayoutDashboard} title="My Account" desc="Profile, addresses & payment" />
+              <div className="border-t" />
+              <MenuLink to="/tracking" icon={Package} title="Orders" desc="Track deliveries & history" />
+              <div className="border-t" />
+              <MenuLink to="/marketplace" icon={Heart} title="Saved Items" desc="Your wishlist & bookmarks" />
+              <div className="border-t" />
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthUser(null);
+                  setOpen(false);
+                  navigate({ to: "/" });
+                }}
+                className="w-full flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors text-left"
+              >
+                <LogOut className="size-4 text-muted-foreground mt-0.5 shrink-0" />
+                <div className="text-sm font-semibold">Sign Out</div>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors"
+              >
+                <LogIn className="size-4 text-brand mt-0.5 shrink-0" />
+                <div>
+                  <div className="text-sm font-semibold">Sign In</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Access your account & orders</div>
+                </div>
+              </Link>
+              <div className="border-t" />
+              <Link
+                to="/join"
+                className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors"
+              >
+                <UserPlus className="size-4 text-brand mt-0.5 shrink-0" />
+                <div>
+                  <div className="text-sm font-semibold">Create Account</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Faster procurement & tracking</div>
+                </div>
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MenuLink({
+  to,
+  icon: Icon,
+  title,
+  desc,
+}: {
+  to: string;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  desc: string;
+}) {
+  return (
+    <Link to={to} className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors">
+      <Icon className="size-4 text-brand mt-0.5 shrink-0" />
+      <div>
+        <div className="text-sm font-semibold">{title}</div>
+        <div className="text-xs text-muted-foreground mt-0.5">{desc}</div>
+      </div>
+    </Link>
+  );
+}
+
 function Logo({ withWordmark = false }: { withWordmark?: boolean }) {
   return (
+    <div className="flex items-center gap-2">
+      <img src={logoAsset.url} alt="Aluminium Village" className="h-9 w-9 object-contain" />
+      {withWordmark && (
+        <span className="font-bold tracking-tight text-primary">ALUMINIUM VILLAGE</span>
+      )}
+    </div>
+  );
+}
     <div className="flex items-center gap-2">
       <img src={logoAsset.url} alt="Aluminium Village" className="h-9 w-9 object-contain" />
       {withWordmark && (
