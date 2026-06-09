@@ -179,14 +179,6 @@ function Logo({ withWordmark = false }: { withWordmark?: boolean }) {
     </div>
   );
 }
-    <div className="flex items-center gap-2">
-      <img src={logoAsset.url} alt="Aluminium Village" className="h-9 w-9 object-contain" />
-      {withWordmark && (
-        <span className="font-bold tracking-tight text-primary">ALUMINIUM VILLAGE</span>
-      )}
-    </div>
-  );
-}
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const [cartCount] = useState(2);
