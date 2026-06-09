@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteLayout } from "@/components/site-layout";
 import { img } from "@/lib/images";
@@ -85,6 +85,7 @@ const pros = [
 const filters = ["All", "Fabricator", "Supplier", "Installer"];
 
 function Home() {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<Record<string, boolean>>({});
@@ -222,7 +223,8 @@ function Home() {
               return (
                 <article
                   key={p.title + p.tag}
-                  className="group rounded-xl border bg-card overflow-hidden flex flex-col hover:shadow-lg transition-shadow"
+                  onClick={() => navigate({ to: "/marketplace" })}
+                  className="group cursor-pointer rounded-xl border bg-card overflow-hidden flex flex-col hover:shadow-lg transition-shadow"
                 >
                   <div className="aspect-square overflow-hidden bg-secondary">
                     <img
@@ -238,9 +240,10 @@ function Home() {
                     <div className="mt-1 text-sm font-semibold">{p.title}</div>
                     <div className="mt-1 text-sm font-bold text-brand">{p.price}</div>
                     <button
-                      onClick={() =>
-                        setCart((c) => ({ ...c, [p.title + p.tag]: !c[p.title + p.tag] }))
-                      }
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCart((c) => ({ ...c, [p.title + p.tag]: !c[p.title + p.tag] }));
+                      }}
                       className={`mt-3 inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-semibold transition-colors ${
                         inCart
                           ? "bg-accent text-accent-foreground"
