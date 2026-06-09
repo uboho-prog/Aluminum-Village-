@@ -1,8 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { img } from "@/lib/images";
 import { Building2 } from "lucide-react";
 import { useState } from "react";
 import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
+import { setAuthUser } from "@/lib/auth-store";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -11,6 +12,9 @@ export const Route = createFileRoute("/login")({
       { name: "description", content: "Sign in to access your Aluminium Village account." },
     ],
   }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
+  }),
   component: Login,
 });
 
@@ -18,6 +22,17 @@ function Login() {
   const [remember, setRemember] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { redirect } = useSearch({ from: "/login" });
+
+  const handleSignIn = () => {
+    const trimmed = email.trim();
+    if (!trimmed) return;
+    const name = trimmed.split("@")[0].split(/[._-]/)[0];
+    const displayName = name ? name.charAt(0).toUpperCase() + name.slice(1) : "Member";
+    setAuthUser({ name: displayName, email: trimmed });
+    navigate({ to: (redirect as any) || "/" });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-secondary/40">
