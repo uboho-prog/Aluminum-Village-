@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CreditCard,
   Landmark,
@@ -11,7 +11,9 @@ import {
   Shield,
   Headphones,
   Check,
+  LogIn,
 } from "lucide-react";
+import { useAuthUser } from "@/lib/auth-store";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
