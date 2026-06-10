@@ -198,7 +198,7 @@ function Login() {
 
               <p className="text-center text-sm text-muted-foreground">
                 New to the village?{" "}
-                <Link to="/join" className="text-brand font-semibold hover:underline">
+                <Link to="/signup" className="text-brand font-semibold hover:underline">
                   Create an account
                 </Link>
               </p>
