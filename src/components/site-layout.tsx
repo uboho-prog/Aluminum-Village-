@@ -97,7 +97,7 @@ function AccountMenu() {
                 <div className="text-sm font-semibold">Hi, {user.name}</div>
                 <div className="text-xs text-muted-foreground truncate">{user.email}</div>
               </div>
-              <MenuLink to="/about" icon={LayoutDashboard} title="My Account" desc="Profile, addresses & payment" />
+              <MenuLink to="/dashboard" icon={LayoutDashboard} title="My Account" desc="Profile, addresses & payment" />
               <div className="border-t" />
               <MenuLink to="/tracking" icon={Package} title="Orders" desc="Track deliveries & history" />
               <div className="border-t" />
