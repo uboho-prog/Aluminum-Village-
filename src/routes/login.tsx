@@ -146,12 +146,12 @@ function Login() {
                     <label htmlFor="password" className="text-sm font-medium">
                       Password
                     </label>
-                    <button
-                      type="button"
+                    <Link
+                      to="/forgot-password"
                       className="text-xs font-semibold text-brand hover:underline"
                     >
                       Forgot password?
-                    </button>
+                    </Link>
                   </div>
                   <input
                     id="password"

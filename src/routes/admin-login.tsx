@@ -58,9 +58,9 @@ function AdminLogin() {
             <div>
               <div className="flex items-center justify-between">
                 <label className="text-sm font-bold text-slate-700">Access Password</label>
-                <button type="button" className="text-xs font-semibold text-brand hover:underline">
+                <Link to="/forgot-password" search={{ mode: "admin" }} className="text-xs font-semibold text-brand hover:underline">
                   Forgot?
-                </button>
+                </Link>
               </div>
               <div className="mt-1.5 relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
