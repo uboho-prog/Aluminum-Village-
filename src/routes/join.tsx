@@ -176,7 +176,7 @@ function Join() {
                   label="Government Issued ID (Passport, NIN, or Driver's License) *"
                   hint="PDF, JPG, PNG (Max 10MB)"
                 />
-                <FilePick label="Tax Clearance Certificate *" placeholder="Upload certificate..." />
+                <FilePick label="Proof of Address *" placeholder="Upload utility bill or bank statement..." />
                 <FilePick
                   label="Professional Certifications (Optional)"
                   placeholder="ISO, ASTM, or industry specific certs..."
