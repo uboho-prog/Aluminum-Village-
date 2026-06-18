@@ -142,7 +142,7 @@ function Join() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 3 && accountType === "business" && (
             <div>
               <h2 className="text-xl font-bold">Verification</h2>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -158,6 +158,32 @@ function Join() {
                 <label className="flex items-start gap-2 text-sm text-muted-foreground">
                   <input type="checkbox" className="mt-0.5" />
                   I certify the information is accurate and I agree to the{" "}
+                  <a className="text-brand hover:underline">professional terms of service</a>.
+                </label>
+              </div>
+            </div>
+          )}
+
+          {step === 3 && accountType === "individual" && (
+            <div>
+              <h2 className="text-xl font-bold">Individual Verification</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                To maintain our industrial standards, please upload the following documents for verification.
+                Our compliance team will review these within 24-48 hours.
+              </p>
+              <div className="mt-6 space-y-4">
+                <Dropzone
+                  label="Government Issued ID (Passport, NIN, or Driver's License) *"
+                  hint="PDF, JPG, PNG (Max 10MB)"
+                />
+                <FilePick label="Tax Clearance Certificate *" placeholder="Upload certificate..." />
+                <FilePick
+                  label="Professional Certifications (Optional)"
+                  placeholder="ISO, ASTM, or industry specific certs..."
+                />
+                <label className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <input type="checkbox" className="mt-0.5" />
+                  I certify that the information provided is accurate and I agree to the{" "}
                   <a className="text-brand hover:underline">professional terms of service</a>.
                 </label>
               </div>
