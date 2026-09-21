@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import { AtSign, ArrowLeft, CheckCircle2, KeyRound, ShieldCheck } from "lucide-react";
-import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
+import logoUrl from "@/assets/logo.png";
 
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({
@@ -35,7 +35,7 @@ function ForgotPassword() {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
       <main className="flex-1 flex flex-col items-center px-4 sm:px-6 pt-12 pb-16">
         <Link to="/" className="mb-8">
-          <img src={logoAsset.url} alt="Aluminium Village" className="h-14 w-14 object-contain mx-auto" />
+          <img src={logoUrl} alt="Aluminium Village" className="h-14 w-14 object-contain mx-auto" />
         </Link>
 
         <h1 className="text-3xl sm:text-4xl font-serif font-bold text-slate-800 tracking-tight text-center">

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import { Building2 } from "lucide-react";
-import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
+import logoUrl from "@/assets/logo.png";
 import { setAuthUser } from "@/lib/auth-store";
 import { img } from "@/lib/images";
 
@@ -39,7 +39,7 @@ function Signup() {
       <header className="bg-card border-b">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="Aluminium Village" className="h-9 w-9 object-contain" />
+            <img src={logoUrl} alt="Aluminium Village" className="h-9 w-9 object-contain" />
           </Link>
           <nav className="flex items-center gap-6 text-sm font-medium">
             <Link to="/about" className="text-muted-foreground hover:text-foreground transition">About</Link>

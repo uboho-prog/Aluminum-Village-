@@ -1,13 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { AtSign, Lock, Eye, EyeOff, ShieldCheck, Shield } from "lucide-react";
-import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
+import logoUrl from "@/assets/logo.png";
 import { setAuthUser } from "@/lib/auth-store";
 
 export const Route = createFileRoute("/admin-login")({
   head: () => ({
     meta: [
-      { title: "Admin Portal | Aluminium Village" },
+      { title: "Admin Nerve | Aluminium Village" },
       { name: "description", content: "Secure administrator access to the Aluminium Village portal." },
     ],
   }),
@@ -32,13 +32,17 @@ function AdminLogin() {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
       <main className="flex-1 flex flex-col items-center px-4 sm:px-6 pt-12 pb-16">
         <Link to="/" className="mb-8">
-          <img src={logoAsset.url} alt="Aluminium Village" className="h-14 w-14 object-contain mx-auto" />
+          <img src={logoUrl} alt="Aluminium Village" className="h-14 w-14 object-contain mx-auto" />
         </Link>
 
         <h1 className="text-4xl sm:text-5xl font-serif font-bold text-slate-800 tracking-tight">
           Aluminium Village
         </h1>
-        <div className="mt-2 text-xs font-bold tracking-[0.25em] text-slate-500">ADMIN PORTAL</div>
+        <div className="mt-2 text-xs font-bold tracking-[0.25em] text-slate-500">ADMIN NERVE</div>
+
+        <p className="mt-4 text-sm text-muted-foreground text-center max-w-sm">
+          Secure administrator access to manage the platform, verify sellers, and oversee transactions.
+        </p>
 
         <div className="mt-10 w-full max-w-md rounded-2xl bg-card border shadow-xl p-8">
           <form onSubmit={onSubmit} className="space-y-5">

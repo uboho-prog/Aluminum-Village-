@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { ShoppingCart, MessageCircle, X, Send, ChevronDown, Users, UserPlus, User, LayoutDashboard, Package, Heart, LogOut, LogIn } from "lucide-react";
-import logoAsset from "@/assets/aluminium-village-logo.png.asset.json";
+import logoUrl from "@/assets/logo.png";
 import { useAuthUser, setAuthUser } from "@/lib/auth-store";
 
 const nav: { to: string; label: string }[] = [
@@ -172,7 +172,7 @@ function MenuLink({
 function Logo({ withWordmark = false }: { withWordmark?: boolean }) {
   return (
     <div className="flex items-center gap-2">
-      <img src={logoAsset.url} alt="Aluminium Village" className="h-9 w-9 object-contain" />
+      <img src={logoUrl} alt="Aluminium Village" className="h-9 w-9 object-contain" />
       {withWordmark && (
         <span className="font-bold tracking-tight text-primary">ALUMINIUM VILLAGE</span>
       )}
