@@ -43,7 +43,7 @@ function Signup() {
           </Link>
           <nav className="flex items-center gap-6 text-sm font-medium">
             <Link to="/about" className="text-muted-foreground hover:text-foreground transition">About</Link>
-            <Link to="/login" className="text-foreground hover:text-brand transition">Sign in</Link>
+            <Link to="/login" search={{ redirect: undefined }} className="text-foreground hover:text-brand transition">Sign in</Link>
           </nav>
         </div>
       </header>
@@ -66,7 +66,7 @@ function Signup() {
               <h1 className="text-3xl font-bold tracking-tight">Create your account</h1>
               <p className="mt-2 text-sm text-muted-foreground">
                 It only takes a minute. Already a member?{" "}
-                <Link to="/login" className="text-brand font-semibold hover:underline">Sign in</Link>
+                <Link to="/login" search={{ redirect: undefined }} className="text-brand font-semibold hover:underline">Sign in</Link>
               </p>
 
               <form onSubmit={onSubmit} className="mt-7 space-y-4">

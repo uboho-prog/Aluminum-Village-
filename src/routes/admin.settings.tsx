@@ -232,7 +232,7 @@ function AdminSettingsPage() {
             {/* Future */}
             <div className="rounded-2xl bg-[#1e293b] border border-slate-700/50 p-6 opacity-50">
               <h2 className="text-sm font-bold tracking-wider text-white mb-2">TEAM MEMBER ACCESS</h2>
-              <p className="text-sm text-slate-400">Add team member access — coming soon.</p>
+              <p className="text-sm text-slate-400">Add team member access (coming soon).</p>
             </div>
           </div>
         )}

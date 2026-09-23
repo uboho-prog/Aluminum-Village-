@@ -96,7 +96,7 @@ const DEALS: Deal[] = [
       { time: "10 Nov 2024 08:00", event: "Payment confirmed by customer" },
       { time: "10 Nov 2024 08:01", event: "Funds locked in escrow" },
       { time: "12 Nov 2024 16:00", event: "Seller marked as In Delivery" },
-      { time: "14 Nov 2024 09:30", event: "Customer raised dispute — received damaged sheets" },
+      { time: "14 Nov 2024 09:30", event: "Customer raised dispute, received damaged sheets" },
     ],
     deliveryNotes: "Customer reports 12 out of 100 sheets arrived with surface scratches.",
     disputeDetails: "Customer claims 12 sheets arrived with deep surface scratches that were not present at inspection. Requesting partial refund of ₦2,232,000.",

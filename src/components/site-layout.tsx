@@ -1,8 +1,28 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { ShoppingCart, MessageCircle, X, Send, ChevronDown, Users, UserPlus, User, LayoutDashboard, Package, Heart, LogOut, LogIn } from "lucide-react";
+import {
+  ShoppingCart,
+  MessageCircle,
+  X,
+  Send,
+  ChevronDown,
+  Users,
+  UserPlus,
+  User,
+  LayoutDashboard,
+  Package,
+  Heart,
+  LogOut,
+  LogIn,
+  Truck,
+  ShieldCheck,
+  BadgeCheck,
+  Headphones,
+  Sparkles,
+} from "lucide-react";
 import logoUrl from "@/assets/logo.png";
 import { useAuthUser, setAuthUser } from "@/lib/auth-store";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const nav: { to: string; label: string }[] = [
   { to: "/", label: "Home" },
@@ -120,6 +140,7 @@ function AccountMenu() {
             <>
               <Link
                 to="/login"
+                search={{ redirect: undefined }}
                 className="flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors"
               >
                 <LogIn className="size-4 text-brand mt-0.5 shrink-0" />
@@ -169,6 +190,40 @@ function MenuLink({
   );
 }
 
+const notices = [
+  { icon: Truck, text: "Nationwide delivery on bulk orders in Lagos, Abuja, Port Harcourt & Ibadan" },
+  { icon: ShieldCheck, text: "Escrow-protected payments on every verified order" },
+  { icon: BadgeCheck, text: "320+ verified fabricators, suppliers and installers onboard" },
+  { icon: Sparkles, text: "New: bulk extrusion pricing for contractors & developers" },
+  { icon: Headphones, text: "Need a custom quote? Talk to a Village specialist, Mon–Sat 8am–6pm" },
+];
+
+/** Sticky header strip with a seamless scrolling marquee of site notices. */
+function TickerBar() {
+  return (
+    <div
+      aria-label="Site announcements"
+      className="ticker relative flex overflow-hidden bg-gradient-to-r from-brand to-accent py-1.5 text-brand-foreground"
+    >
+      <div className="flex w-max shrink-0 animate-ticker items-center">
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1}>
+            {notices.map((n) => (
+              <span
+                key={`${copy}-${n.text}`}
+                className="inline-flex items-center gap-2 whitespace-nowrap px-6 text-[11px] font-medium tracking-wide"
+              >
+                <n.icon className="size-3.5 shrink-0" />
+                {n.text}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Logo({ withWordmark = false }: { withWordmark?: boolean }) {
   return (
     <div className="flex items-center gap-2">
@@ -196,7 +251,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     setTimeout(() => {
       setMessages((m) => [
         ...m,
-        { from: "bot", text: "Thanks — a Village specialist will reach out shortly." },
+        { from: "bot", text: "Thanks! A Village specialist will reach out shortly." },
       ]);
     }, 600);
   };
@@ -204,6 +259,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
+        <TickerBar />
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Link to="/" className="flex items-center" aria-label="Aluminium Village home">
             <Logo />
@@ -245,6 +301,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 </span>
               )}
             </Link>
+            <ThemeToggle />
             <AccountMenu />
             <Link
               to="/contact"
@@ -325,7 +382,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <div>
                 <div className="text-sm font-semibold">Village Support</div>
                 <div className="text-[10px] uppercase tracking-wider opacity-90 flex items-center gap-1">
-                  <span className="inline-block size-1.5 rounded-full bg-emerald-300" /> Online now
+                  <span className="inline-block size-1.5 rounded-full bg-success" /> Online now
                 </div>
               </div>
               <button

@@ -148,6 +148,7 @@ function Login() {
                     </label>
                     <Link
                       to="/forgot-password"
+                      search={{ mode: "user" }}
                       className="text-xs font-semibold text-brand hover:underline"
                     >
                       Forgot password?
@@ -198,7 +199,7 @@ function Login() {
 
               <p className="text-center text-sm text-muted-foreground">
                 New to the village?{" "}
-                <Link to="/signup" className="text-brand font-semibold hover:underline">
+                <Link to="/signup" search={{ redirect: undefined }} className="text-brand font-semibold hover:underline">
                   Create an account
                 </Link>
               </p>

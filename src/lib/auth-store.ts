@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 
-export type AuthUser = { name: string; email: string } | null;
+export type AdminRole = "business" | "individual" | "overall";
+
+export type AuthUser = { name: string; email: string; role?: AdminRole } | null;
+
+export const ADMIN_ROLE_LABEL: Record<AdminRole, string> = {
+  business: "Business Suite",
+  individual: "Individual Suite",
+  overall: "Overall Admin",
+};
 const KEY = "av_auth_user";
 const EVT = "av-auth-change";
 

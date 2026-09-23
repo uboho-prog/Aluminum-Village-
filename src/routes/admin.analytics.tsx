@@ -107,7 +107,7 @@ function AdminAnalyticsPage() {
           </select>
         </div>
 
-        {/* Row 1 — Metric Cards */}
+        {/* Row 1: Metric Cards */}
         <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {METRICS.map((m) => (
             <div key={m.label} className="rounded-2xl bg-[#1e293b] border border-slate-700/50 p-5">
@@ -121,7 +121,7 @@ function AdminAnalyticsPage() {
           ))}
         </div>
 
-        {/* Row 2 — Revenue Line Chart + Deals Donut */}
+        {/* Row 2: Revenue Line Chart + Deals Donut */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Revenue Over Time */}
           <div className="rounded-2xl bg-[#1e293b] border border-slate-700/50 p-6">
@@ -190,7 +190,7 @@ function AdminAnalyticsPage() {
           </div>
         </div>
 
-        {/* Row 3 — Category Bar Chart + New Users Bar Chart */}
+        {/* Row 3: Category Bar Chart + New Users Bar Chart */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Top Categories by Revenue */}
           <div className="rounded-2xl bg-[#1e293b] border border-slate-700/50 p-6">
@@ -234,7 +234,7 @@ function AdminAnalyticsPage() {
           </div>
         </div>
 
-        {/* Row 4 — Top Sellers Table */}
+        {/* Row 4: Top Sellers Table */}
         <div className="rounded-2xl bg-[#1e293b] border border-slate-700/50 p-6">
           <h3 className="text-lg font-bold text-white mb-4">Top Sellers by Revenue</h3>
           <div className="overflow-x-auto">
@@ -267,7 +267,7 @@ function AdminAnalyticsPage() {
           </div>
         </div>
 
-        {/* Row 5 — Disputes & Refunds */}
+        {/* Row 5: Disputes & Refunds */}
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-2xl bg-[#1e293b] border border-slate-700/50 p-6">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">

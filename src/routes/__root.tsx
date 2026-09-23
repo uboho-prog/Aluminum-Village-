@@ -108,10 +108,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+/**
+ * Runs before first paint so the stored (or OS) theme is applied without a
+ * flash of the wrong colors. Keep in sync with src/lib/theme-store.ts.
+ */
+const THEME_BOOT_SCRIPT = `(function(){try{var k="av_theme",s=localStorage.getItem(k),d=s==="dark"||(!s&&window.matchMedia("(prefers-color-scheme: dark)").matches),r=document.documentElement;r.classList.toggle("dark",d);r.style.colorScheme=d?"dark":"light";}catch(e){}})();`;
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the theme boot script below intentionally
+    // mutates <html> (class/color-scheme) before React loads to avoid a
+    // theme flash; React would otherwise warn about the attribute mismatch
+    // on every page. Only affects this element, not its children.
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         <HeadContent />
       </head>
       <body>

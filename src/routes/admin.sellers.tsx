@@ -101,7 +101,7 @@ const SELLERS: Seller[] = [
     id: "SLR-0102", businessName: "HollowCore Profiles", ownerName: "Blessing Okonkwo", category: "Accessories",
     phone: "+234 705 678 1234", email: "blessing@hollowcore.com", bankStatus: "Unverified",
     bankName: "UBA", bankAccount: "2098765431", bankAccountName: "HollowCore Profiles",
-    paystack: "Not Connected", paystackCode: "—", totalDeals: 0, totalPaidOut: "₦0",
+    paystack: "Not Connected", paystackCode: "-", totalDeals: 0, totalPaidOut: "₦0",
     commissionGenerated: "₦0", status: "Pending",
     listings: [], orderHistory: [], notes: "",
   },
@@ -109,7 +109,7 @@ const SELLERS: Seller[] = [
     id: "SLR-0115", businessName: "QuickFrame Nigeria", ownerName: "Ifeanyi Nwosu", category: "Mixed",
     phone: "+234 811 234 5678", email: "ifeanyi@quickframe.com", bankStatus: "Verified",
     bankName: "Zenith Bank", bankAccount: "1098765432", bankAccountName: "QuickFrame Nigeria",
-    paystack: "Not Connected", paystackCode: "—", totalDeals: 3, totalPaidOut: "₦1,800,000",
+    paystack: "Not Connected", paystackCode: "-", totalDeals: 3, totalPaidOut: "₦1,800,000",
     commissionGenerated: "₦270,000", status: "Suspended",
     listings: [
       { name: "Door Frames (Standard)", price: "₦8,500/unit", status: "Inactive" },
@@ -155,7 +155,7 @@ function AdminSellersPage() {
     setReminderOpen(null);
     if (channel === "email") {
       toast.success(`Email reminder sent to ${seller.email}`, {
-        description: `Subject: Complete your Paystack setup — Aluminium Village`,
+        description: `Subject: Complete your Paystack setup - Aluminium Village`,
       });
     } else {
       toast.success(`WhatsApp reminder sent to ${seller.phone}`, {

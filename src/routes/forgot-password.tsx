@@ -29,31 +29,31 @@ function ForgotPassword() {
   };
 
   const accent = isAdmin ? "#0b50c4" : undefined;
-  const backTo = isAdmin ? "/admin-login" : "/login";
+  const backTo = isAdmin ? "/admin/login" : "/login";
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100">
+    <div className="min-h-screen flex flex-col bg-secondary/40">
       <main className="flex-1 flex flex-col items-center px-4 sm:px-6 pt-12 pb-16">
         <Link to="/" className="mb-8">
           <img src={logoUrl} alt="Aluminium Village" className="h-14 w-14 object-contain mx-auto" />
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-slate-800 tracking-tight text-center">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground tracking-tight text-center">
           {isAdmin ? "Admin Password Recovery" : "Forgot Your Password?"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground text-center max-w-md">
           {isAdmin
             ? "Enter your administrator email to receive a secure password reset link."
-            : "No worries — enter your email and we'll send you instructions to reset it."}
+            : "No worries, enter your email and we'll send you instructions to reset it."}
         </p>
 
         <div className="mt-8 w-full max-w-md rounded-2xl bg-card border shadow-xl p-8">
           {sent ? (
             <div className="text-center space-y-4">
-              <div className="mx-auto grid place-items-center size-14 rounded-full bg-emerald-50 text-emerald-600">
+              <div className="mx-auto grid place-items-center size-14 rounded-full bg-success/10 text-success">
                 <CheckCircle2 className="size-7" />
               </div>
-              <h2 className="text-xl font-bold text-slate-800">Check your inbox</h2>
+              <h2 className="text-xl font-bold text-foreground">Check your inbox</h2>
               <p className="text-sm text-muted-foreground">
                 We've sent a password reset link to <span className="font-semibold text-foreground">{email}</span>.
                 The link will expire in 30 minutes.
@@ -68,7 +68,7 @@ function ForgotPassword() {
           ) : (
             <form onSubmit={onSubmit} className="space-y-5">
               <div>
-                <label className="text-sm font-bold text-slate-700">
+                <label className="text-sm font-bold text-foreground">
                   {isAdmin ? "Administrator Email" : "Email Address"}
                 </label>
                 <div className="mt-1.5 relative">
@@ -102,6 +102,7 @@ function ForgotPassword() {
           <div className="mt-6 pt-5 border-t flex items-center justify-center">
             <Link
               to={backTo}
+              search={isAdmin ? { suite: undefined } : { redirect: undefined }}
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="size-4" />

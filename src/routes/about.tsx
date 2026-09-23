@@ -72,7 +72,7 @@ function About() {
               "Quality aluminium work has always existed here. We just built the platform to prove
               it to the rest of Nigeria."
               <footer className="not-italic mt-2 text-sm text-muted-foreground">
-                — Founder, Aluminium Village
+                - Founder, Aluminium Village
               </footer>
             </blockquote>
           </div>
@@ -136,7 +136,7 @@ function About() {
             How we are different
           </div>
           <h2 className="mt-2 text-3xl md:text-4xl font-bold">
-            We do not just list — we manage every deal
+            We do not just list: we manage every deal
           </h2>
           <p className="mt-4 text-muted-foreground">
             Most marketplaces just connect people and walk away. We stay until the job is done.

@@ -329,7 +329,7 @@ function Home() {
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
-                    <span className="text-amber-600 font-semibold">
+                    <span className="text-warning font-semibold">
                       ★ {p.rating} ({p.reviews} reviews)
                     </span>
                     <span className="rounded-full bg-secondary px-2 py-0.5">{p.location}</span>
@@ -388,7 +388,7 @@ function Home() {
                 </div>
                 <div className="mt-3 font-semibold">Request received</div>
                 <p className="text-sm text-muted-foreground mt-1 max-w-xs">
-                  Thanks {form.name || "there"} — a Village specialist will email you within 24
+                  Thanks {form.name || "there"}! A Village specialist will email you within 24
                   hours.
                 </p>
                 <button

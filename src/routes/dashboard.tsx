@@ -46,9 +46,9 @@ const ORDERS: Order[] = [
 
 function StatusBadge({ status }: { status: Order["status"] }) {
   const map = {
-    Shipped: "bg-emerald-100 text-emerald-700",
-    Delivered: "bg-sky-100 text-sky-700",
-    Processing: "bg-amber-100 text-amber-700",
+    Shipped: "bg-success/10 text-success",
+    Delivered: "bg-info/10 text-info",
+    Processing: "bg-warning/10 text-warning",
   } as const;
   return (
     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${map[status]}`}>
