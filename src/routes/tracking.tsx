@@ -14,6 +14,7 @@ import {
   Phone,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useMyPurchases } from "@/lib/platform-store";
 
 export const Route = createFileRoute("/tracking")({
   head: () => ({
@@ -40,6 +41,7 @@ const steps = [
 function Tracking() {
   const currentStep = 3; // In Transit
   const [pulse, setPulse] = useState(0);
+  const myOrders = useMyPurchases();
 
   useEffect(() => {
     const id = setInterval(() => setPulse((p) => (p + 1) % 100), 50);
@@ -64,6 +66,33 @@ function Tracking() {
             Premium Grade Industrial Shipment in Transit
           </p>
         </div>
+
+        {myOrders.length > 0 && (
+          <div className="mt-8 rounded-2xl border bg-card p-6 shadow-sm">
+            <h2 className="text-lg font-bold">Your Orders</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Orders you've placed. Payment is held in escrow by Aluminium Village until released to the vendor.
+            </p>
+            <div className="mt-4 divide-y">
+              {myOrders.map((o) => (
+                <div key={o.id} className="flex items-center justify-between gap-4 py-3">
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold">#{o.orderNumber}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {o.sellerName} · {new Date(o.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-sm font-bold">{o.total}</div>
+                    <div className="text-[11px] text-muted-foreground">
+                      {o.status} · {o.paymentStatus}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mt-8 grid lg:grid-cols-[1fr_360px] gap-6">
           {/* Left column */}

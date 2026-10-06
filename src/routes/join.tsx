@@ -1,7 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { useState } from "react";
 import { Check, MapPin, Upload, FileText, BadgeCheck, Shield, Award } from "lucide-react";
+import { toast } from "sonner";
+import { useAuthUser } from "@/lib/auth-store";
+import { createBusinessApplication, createProfessionalApplication } from "@/lib/platform-store";
 
 export const Route = createFileRoute("/join")({
   head: () => ({
@@ -20,7 +23,99 @@ const steps = ["Account Type", "Details", "Verification"];
 
 function Join() {
   const [step, setStep] = useState(1);
-  const [accountType, setAccountType] = useState<"business" | "individual">("business");
+  const [accountType, setAccountType] = useState<"business" | "professional">("business");
+  const user = useAuthUser();
+  const navigate = useNavigate();
+
+  const [repName, setRepName] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [email, setEmail] = useState(user?.email ?? "");
+  const [phone, setPhone] = useState("");
+  const [specialization, setSpecialization] = useState("Aluminium Fabricator");
+  const [years, setYears] = useState("");
+  const [serviceArea, setServiceArea] = useState("");
+  const [description, setDescription] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const submit = () => {
+    if (!repName.trim() || !email.trim()) {
+      toast.error("Please add your name and email.");
+      setStep(2);
+      return;
+    }
+    if (!agreed) {
+      toast.error("Please accept the terms to continue.");
+      return;
+    }
+    if (accountType === "business") {
+      createBusinessApplication({
+        businessName: businessName.trim() || repName.trim(),
+        ownerName: repName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        category: specialization,
+        address: serviceArea.trim() || "Nigeria",
+        cacNumber: "Pending",
+        bankDetails: {
+          bankName: "—",
+          accountNumber: "—",
+          accountName: businessName.trim() || repName.trim(),
+        },
+        paystackConnected: false,
+      });
+    } else {
+      createProfessionalApplication({
+        fullName: repName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        headline: `${specialization}${years ? ` · ${years} yrs exp` : ""}`,
+        skills: description
+          ? description
+              .split(/,|\n/)
+              .map((s) => s.trim())
+              .filter(Boolean)
+              .slice(0, 6)
+          : [specialization],
+        experience: years ? `${years} years` : "—",
+        portfolio: [],
+        hourlyRate: "₦0",
+      });
+    }
+    setSubmitted(true);
+    toast.success("Application submitted for verification.");
+  };
+
+  if (submitted) {
+    return (
+      <SiteLayout>
+        <section className="mx-auto max-w-xl px-4 sm:px-6 py-20 text-center">
+          <div className="mx-auto grid place-items-center size-16 rounded-full bg-emerald-100 text-emerald-600">
+            <Check className="size-8" />
+          </div>
+          <h1 className="mt-5 text-3xl font-bold tracking-tight">Application received</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Thanks, {repName}. Our team reviews {accountType === "business" ? "business" : "professional"}{" "}
+            applications within 24–48 hours. Once approved, you'll be live on Aluminium Village.
+          </p>
+          <div className="mt-7 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <button
+              onClick={() => navigate({ to: "/" })}
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-brand text-brand-foreground px-5 py-2.5 text-sm font-semibold hover:bg-brand/90 transition"
+            >
+              Back home
+            </button>
+            <Link
+              to="/directory"
+              className="inline-flex items-center justify-center gap-2 rounded-md border bg-card px-5 py-2.5 text-sm font-semibold hover:bg-secondary transition"
+            >
+              Browse the directory
+            </Link>
+          </div>
+        </section>
+      </SiteLayout>
+    );
+  }
 
   return (
     <SiteLayout>
@@ -76,11 +171,11 @@ function Join() {
               <div className="mt-6 grid sm:grid-cols-2 gap-4">
                 {[
                   { id: "business", title: "Business / Company", desc: "Registered fabricator, supplier, or installation firm." },
-                  { id: "individual", title: "Individual Professional", desc: "Freelance technician, artisan, or consultant." },
+                  { id: "professional", title: "Professional", desc: "Freelance technician, artisan, or consultant." },
                 ].map((opt) => (
                   <button
                     key={opt.id}
-                    onClick={() => setAccountType(opt.id as "business" | "individual")}
+                    onClick={() => setAccountType(opt.id as "business" | "professional")}
                     className={`text-left rounded-xl border p-5 transition-colors ${
                       accountType === opt.id
                         ? "border-brand bg-brand/5 ring-2 ring-brand"
@@ -97,25 +192,62 @@ function Join() {
 
           {step === 2 && (
             <div>
-              <h2 className="text-xl font-bold">Professional Details</h2>
+              <h2 className="text-xl font-bold">
+                {accountType === "business" ? "Business Details" : "Professional Details"}
+              </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Tell us about your specialization and service area.
+                Tell us about your {accountType === "business" ? "company" : "specialization"} and service area.
               </p>
               <div className="mt-6 grid sm:grid-cols-2 gap-4">
-                <Field label="Business Representative Name" placeholder="Jane Adekunle" />
-                <Field label="Contact Number" placeholder="+234 ..." />
+                {accountType === "business" && (
+                  <Field
+                    label="Business Name"
+                    placeholder="Precision Aluminium Co."
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                  />
+                )}
+                <Field
+                  label={accountType === "business" ? "Representative Name" : "Full Name"}
+                  placeholder="Jane Adekunle"
+                  value={repName}
+                  onChange={(e) => setRepName(e.target.value)}
+                />
+                <Field
+                  label="Email Address"
+                  type="email"
+                  placeholder="you@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <Field
+                  label="Contact Number"
+                  placeholder="+234 ..."
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
                 <div>
                   <label className="text-xs font-medium text-muted-foreground">
-                    Professional Specialization
+                    {accountType === "business" ? "Category" : "Professional Specialization"}
                   </label>
-                  <select className="mt-1 w-full rounded-md border bg-card px-3 py-2.5 text-sm">
+                  <select
+                    value={specialization}
+                    onChange={(e) => setSpecialization(e.target.value)}
+                    className="mt-1 w-full rounded-md border bg-card px-3 py-2.5 text-sm"
+                  >
                     <option>Aluminium Fabricator</option>
                     <option>System Installer</option>
                     <option>Material Supplier</option>
                     <option>Technical Consultant</option>
                   </select>
                 </div>
-                <Field label="Years of Experience" placeholder="e.g. 8" type="number" />
+                <Field
+                  label="Years of Experience"
+                  placeholder="e.g. 8"
+                  type="number"
+                  value={years}
+                  onChange={(e) => setYears(e.target.value)}
+                />
                 <div className="sm:col-span-2">
                   <label className="text-xs font-medium text-muted-foreground">
                     Primary Service Area
@@ -123,6 +255,8 @@ function Join() {
                   <div className="mt-1 flex items-center gap-2 rounded-md border bg-card px-3 py-2.5">
                     <MapPin className="size-4 text-muted-foreground" />
                     <input
+                      value={serviceArea}
+                      onChange={(e) => setServiceArea(e.target.value)}
                       placeholder="Lagos, Nigeria"
                       className="bg-transparent outline-none text-sm flex-1"
                     />
@@ -130,10 +264,12 @@ function Join() {
                 </div>
                 <div className="sm:col-span-2">
                   <label className="text-xs font-medium text-muted-foreground">
-                    Professional Description
+                    {accountType === "business" ? "Business Description" : "Professional Description / Skills"}
                   </label>
                   <textarea
                     rows={4}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     placeholder="Describe your work, capabilities and notable projects..."
                     className="mt-1 w-full rounded-md border bg-card px-3 py-2.5 text-sm"
                   />
@@ -156,7 +292,7 @@ function Join() {
                   placeholder="ISO, ASTM, or industry specific certs..."
                 />
                 <label className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <input type="checkbox" className="mt-0.5" />
+                  <input type="checkbox" className="mt-0.5" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
                   I certify the information is accurate and I agree to the{" "}
                   <a className="text-brand hover:underline">professional terms of service</a>.
                 </label>
@@ -164,9 +300,9 @@ function Join() {
             </div>
           )}
 
-          {step === 3 && accountType === "individual" && (
+          {step === 3 && accountType === "professional" && (
             <div>
-              <h2 className="text-xl font-bold">Individual Verification</h2>
+              <h2 className="text-xl font-bold">Professional Verification</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 To maintain our industrial standards, please upload the following documents for verification.
                 Our compliance team will review these within 24-48 hours.
@@ -182,7 +318,7 @@ function Join() {
                   placeholder="ISO, ASTM, or industry specific certs..."
                 />
                 <label className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <input type="checkbox" className="mt-0.5" />
+                  <input type="checkbox" className="mt-0.5" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
                   I certify that the information provided is accurate and I agree to the{" "}
                   <a className="text-brand hover:underline">professional terms of service</a>.
                 </label>
@@ -206,7 +342,10 @@ function Join() {
                 Continue
               </button>
             ) : (
-              <button className="rounded-md bg-brand text-brand-foreground px-5 py-2.5 text-sm font-semibold hover:opacity-90">
+              <button
+                onClick={submit}
+                className="rounded-md bg-brand text-brand-foreground px-5 py-2.5 text-sm font-semibold hover:opacity-90"
+              >
                 Submit for Verification
               </button>
             )}

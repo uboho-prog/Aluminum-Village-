@@ -25,14 +25,22 @@ import { Route as TrackingRouteImport } from './routes/tracking'
 import { Route as AdminLoginIndexRouteImport } from './routes/admin-login/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as AdminApprovalsRouteImport } from './routes/admin.approvals'
 import { Route as AdminDealsRouteImport } from './routes/admin.deals'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
+import { Route as AdminProductsRouteImport } from './routes/admin.products'
+import { Route as AdminProfileRouteImport } from './routes/admin.profile'
+import { Route as AdminRequestsRouteImport } from './routes/admin.requests'
+import { Route as AdminSalesRouteImport } from './routes/admin.sales'
 import { Route as AdminSellersRouteImport } from './routes/admin.sellers'
+import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as ProIdRouteImport } from './routes/pro.$id'
 import { Route as AdminLoginBusinessRouteImport } from './routes/admin.login.business'
-import { Route as AdminLoginIndividualRouteImport } from './routes/admin.login.individual'
 import { Route as AdminLoginOverallRouteImport } from './routes/admin.login.overall'
+import { Route as AdminLoginProfessionalRouteImport } from './routes/admin.login.professional'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -114,6 +122,11 @@ const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminApprovalsRoute = AdminApprovalsRouteImport.update({
+  id: '/approvals',
+  path: '/approvals',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDealsRoute = AdminDealsRouteImport.update({
   id: '/deals',
   path: '/deals',
@@ -124,9 +137,39 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProfileRoute = AdminProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRequestsRoute = AdminRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSalesRoute = AdminSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSellersRoute = AdminSellersRouteImport.update({
   id: '/sellers',
   path: '/sellers',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminServicesRoute = AdminServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
@@ -139,19 +182,24 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AdminRoute,
 } as any)
+const ProIdRoute = ProIdRouteImport.update({
+  id: '/pro/$id',
+  path: '/pro/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLoginBusinessRoute = AdminLoginBusinessRouteImport.update({
   id: '/business',
   path: '/business',
   getParentRoute: () => AdminLoginRoute,
 } as any)
-const AdminLoginIndividualRoute = AdminLoginIndividualRouteImport.update({
-  id: '/individual',
-  path: '/individual',
-  getParentRoute: () => AdminLoginRoute,
-} as any)
 const AdminLoginOverallRoute = AdminLoginOverallRouteImport.update({
   id: '/overall',
   path: '/overall',
+  getParentRoute: () => AdminLoginRoute,
+} as any)
+const AdminLoginProfessionalRoute = AdminLoginProfessionalRouteImport.update({
+  id: '/professional',
+  path: '/professional',
   getParentRoute: () => AdminLoginRoute,
 } as any)
 
@@ -170,16 +218,24 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/tracking': typeof TrackingRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/approvals': typeof AdminApprovalsRoute
   '/admin/deals': typeof AdminDealsRoute
   '/admin/login': typeof AdminLoginRouteWithChildren
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/requests': typeof AdminRequestsRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/admin/sellers': typeof AdminSellersRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/pro/$id': typeof ProIdRoute
   '/admin-login/': typeof AdminLoginIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/login/business': typeof AdminLoginBusinessRoute
-  '/admin/login/individual': typeof AdminLoginIndividualRoute
   '/admin/login/overall': typeof AdminLoginOverallRoute
+  '/admin/login/professional': typeof AdminLoginProfessionalRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -195,16 +251,24 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/tracking': typeof TrackingRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/approvals': typeof AdminApprovalsRoute
   '/admin/deals': typeof AdminDealsRoute
   '/admin/login': typeof AdminLoginRouteWithChildren
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/requests': typeof AdminRequestsRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/admin/sellers': typeof AdminSellersRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/pro/$id': typeof ProIdRoute
   '/admin-login': typeof AdminLoginIndexRoute
   '/admin': typeof AdminIndexRoute
   '/admin/login/business': typeof AdminLoginBusinessRoute
-  '/admin/login/individual': typeof AdminLoginIndividualRoute
   '/admin/login/overall': typeof AdminLoginOverallRoute
+  '/admin/login/professional': typeof AdminLoginProfessionalRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -222,16 +286,24 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/tracking': typeof TrackingRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/approvals': typeof AdminApprovalsRoute
   '/admin/deals': typeof AdminDealsRoute
   '/admin/login': typeof AdminLoginRouteWithChildren
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/requests': typeof AdminRequestsRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/admin/sellers': typeof AdminSellersRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/pro/$id': typeof ProIdRoute
   '/admin-login/': typeof AdminLoginIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/login/business': typeof AdminLoginBusinessRoute
-  '/admin/login/individual': typeof AdminLoginIndividualRoute
   '/admin/login/overall': typeof AdminLoginOverallRoute
+  '/admin/login/professional': typeof AdminLoginProfessionalRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -250,16 +322,24 @@ export interface FileRouteTypes {
     | '/signup'
     | '/tracking'
     | '/admin/analytics'
+    | '/admin/approvals'
     | '/admin/deals'
     | '/admin/login'
+    | '/admin/payments'
+    | '/admin/products'
+    | '/admin/profile'
+    | '/admin/requests'
+    | '/admin/sales'
     | '/admin/sellers'
+    | '/admin/services'
     | '/admin/settings'
     | '/admin/users'
+    | '/pro/$id'
     | '/admin-login/'
     | '/admin/'
     | '/admin/login/business'
-    | '/admin/login/individual'
     | '/admin/login/overall'
+    | '/admin/login/professional'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -275,16 +355,24 @@ export interface FileRouteTypes {
     | '/signup'
     | '/tracking'
     | '/admin/analytics'
+    | '/admin/approvals'
     | '/admin/deals'
     | '/admin/login'
+    | '/admin/payments'
+    | '/admin/products'
+    | '/admin/profile'
+    | '/admin/requests'
+    | '/admin/sales'
     | '/admin/sellers'
+    | '/admin/services'
     | '/admin/settings'
     | '/admin/users'
+    | '/pro/$id'
     | '/admin-login'
     | '/admin'
     | '/admin/login/business'
-    | '/admin/login/individual'
     | '/admin/login/overall'
+    | '/admin/login/professional'
   id:
     | '__root__'
     | '/'
@@ -301,16 +389,24 @@ export interface FileRouteTypes {
     | '/signup'
     | '/tracking'
     | '/admin/analytics'
+    | '/admin/approvals'
     | '/admin/deals'
     | '/admin/login'
+    | '/admin/payments'
+    | '/admin/products'
+    | '/admin/profile'
+    | '/admin/requests'
+    | '/admin/sales'
     | '/admin/sellers'
+    | '/admin/services'
     | '/admin/settings'
     | '/admin/users'
+    | '/pro/$id'
     | '/admin-login/'
     | '/admin/'
     | '/admin/login/business'
-    | '/admin/login/individual'
     | '/admin/login/overall'
+    | '/admin/login/professional'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -327,6 +423,7 @@ export interface RootRouteChildren {
   MarketplaceRoute: typeof MarketplaceRoute
   SignupRoute: typeof SignupRoute
   TrackingRoute: typeof TrackingRoute
+  ProIdRoute: typeof ProIdRoute
   AdminLoginIndexRoute: typeof AdminLoginIndexRoute
 }
 
@@ -444,6 +541,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnalyticsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/approvals': {
+      id: '/admin/approvals'
+      path: '/approvals'
+      fullPath: '/admin/approvals'
+      preLoaderRoute: typeof AdminApprovalsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/deals': {
       id: '/admin/deals'
       path: '/deals'
@@ -458,11 +562,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/payments': {
+      id: '/admin/payments'
+      path: '/payments'
+      fullPath: '/admin/payments'
+      preLoaderRoute: typeof AdminPaymentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/profile': {
+      id: '/admin/profile'
+      path: '/profile'
+      fullPath: '/admin/profile'
+      preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/requests': {
+      id: '/admin/requests'
+      path: '/requests'
+      fullPath: '/admin/requests'
+      preLoaderRoute: typeof AdminRequestsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sales': {
+      id: '/admin/sales'
+      path: '/sales'
+      fullPath: '/admin/sales'
+      preLoaderRoute: typeof AdminSalesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/sellers': {
       id: '/admin/sellers'
       path: '/sellers'
       fullPath: '/admin/sellers'
       preLoaderRoute: typeof AdminSellersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/services': {
+      id: '/admin/services'
+      path: '/services'
+      fullPath: '/admin/services'
+      preLoaderRoute: typeof AdminServicesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/settings': {
@@ -479,18 +625,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/pro/$id': {
+      id: '/pro/$id'
+      path: '/pro/$id'
+      fullPath: '/pro/$id'
+      preLoaderRoute: typeof ProIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/login/business': {
       id: '/admin/login/business'
       path: '/business'
       fullPath: '/admin/login/business'
       preLoaderRoute: typeof AdminLoginBusinessRouteImport
-      parentRoute: typeof AdminLoginRoute
-    }
-    '/admin/login/individual': {
-      id: '/admin/login/individual'
-      path: '/individual'
-      fullPath: '/admin/login/individual'
-      preLoaderRoute: typeof AdminLoginIndividualRouteImport
       parentRoute: typeof AdminLoginRoute
     }
     '/admin/login/overall': {
@@ -500,19 +646,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginOverallRouteImport
       parentRoute: typeof AdminLoginRoute
     }
+    '/admin/login/professional': {
+      id: '/admin/login/professional'
+      path: '/professional'
+      fullPath: '/admin/login/professional'
+      preLoaderRoute: typeof AdminLoginProfessionalRouteImport
+      parentRoute: typeof AdminLoginRoute
+    }
   }
 }
 
 interface AdminLoginRouteChildren {
   AdminLoginBusinessRoute: typeof AdminLoginBusinessRoute
-  AdminLoginIndividualRoute: typeof AdminLoginIndividualRoute
   AdminLoginOverallRoute: typeof AdminLoginOverallRoute
+  AdminLoginProfessionalRoute: typeof AdminLoginProfessionalRoute
 }
 
 const AdminLoginRouteChildren: AdminLoginRouteChildren = {
   AdminLoginBusinessRoute: AdminLoginBusinessRoute,
-  AdminLoginIndividualRoute: AdminLoginIndividualRoute,
   AdminLoginOverallRoute: AdminLoginOverallRoute,
+  AdminLoginProfessionalRoute: AdminLoginProfessionalRoute,
 }
 
 const AdminLoginRouteWithChildren = AdminLoginRoute._addFileChildren(
@@ -521,9 +674,16 @@ const AdminLoginRouteWithChildren = AdminLoginRoute._addFileChildren(
 
 interface AdminRouteChildren {
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminApprovalsRoute: typeof AdminApprovalsRoute
   AdminDealsRoute: typeof AdminDealsRoute
   AdminLoginRoute: typeof AdminLoginRouteWithChildren
+  AdminPaymentsRoute: typeof AdminPaymentsRoute
+  AdminProductsRoute: typeof AdminProductsRoute
+  AdminProfileRoute: typeof AdminProfileRoute
+  AdminRequestsRoute: typeof AdminRequestsRoute
+  AdminSalesRoute: typeof AdminSalesRoute
   AdminSellersRoute: typeof AdminSellersRoute
+  AdminServicesRoute: typeof AdminServicesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -531,9 +691,16 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminApprovalsRoute: AdminApprovalsRoute,
   AdminDealsRoute: AdminDealsRoute,
   AdminLoginRoute: AdminLoginRouteWithChildren,
+  AdminPaymentsRoute: AdminPaymentsRoute,
+  AdminProductsRoute: AdminProductsRoute,
+  AdminProfileRoute: AdminProfileRoute,
+  AdminRequestsRoute: AdminRequestsRoute,
+  AdminSalesRoute: AdminSalesRoute,
   AdminSellersRoute: AdminSellersRoute,
+  AdminServicesRoute: AdminServicesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -555,6 +722,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketplaceRoute: MarketplaceRoute,
   SignupRoute: SignupRoute,
   TrackingRoute: TrackingRoute,
+  ProIdRoute: ProIdRoute,
   AdminLoginIndexRoute: AdminLoginIndexRoute,
 }
 export const routeTree = rootRouteImport

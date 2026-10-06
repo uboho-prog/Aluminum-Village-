@@ -14,6 +14,13 @@ import {
   BarChart3,
   Bell,
   Search,
+  Receipt,
+  UserCircle,
+  Briefcase,
+  Inbox,
+  ShieldCheck,
+  Wallet,
+  Store,
 } from "lucide-react";
 import logoUrl from "@/assets/logo.png";
 import { setAuthUser, ADMIN_ROLE_LABEL, getAuthUser, type AdminRole } from "@/lib/auth-store";
@@ -21,8 +28,18 @@ import { ADMIN_NAV_ACCESS, canAccessAdminSection, canAccessAdminPath, isAdminRol
 
 const ADMIN_NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  // Business suite
+  { to: "/admin/products", label: "Products", icon: Package },
+  { to: "/admin/sales", label: "Sales", icon: Receipt },
+  // Professional suite
+  { to: "/admin/profile", label: "Profile", icon: UserCircle },
+  { to: "/admin/services", label: "Services", icon: Briefcase },
+  { to: "/admin/requests", label: "Requests", icon: Inbox },
+  // Overall admin
+  { to: "/admin/approvals", label: "Approvals", icon: ShieldCheck },
+  { to: "/admin/payments", label: "Payments", icon: Wallet },
   { to: "/admin/users", label: "Users", icon: Users },
-  { to: "/admin/sellers", label: "Sellers", icon: Package },
+  { to: "/admin/sellers", label: "Sellers", icon: Store },
   { to: "/admin/deals", label: "Deals", icon: DollarSign },
   { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/admin/settings", label: "Settings", icon: Settings },

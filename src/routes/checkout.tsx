@@ -12,8 +12,14 @@ import {
   Headphones,
   Check,
   LogIn,
+  ShoppingCart,
+  Package,
 } from "lucide-react";
+import { toast } from "sonner";
 import { useAuthUser } from "@/lib/auth-store";
+import { useCart, placeOrder } from "@/lib/platform-store";
+import { computeTotals, formatNaira, parseNaira } from "@/lib/payments";
+import type { PlatformOrder } from "@/lib/admin-models";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -39,10 +45,34 @@ const payMethods = [
 function Checkout() {
   const [pay, setPay] = useState("card");
   const [createAcct, setCreateAcct] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [placedOrders, setPlacedOrders] = useState<PlatformOrder[] | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
   const user = useAuthUser();
+  const cart = useCart();
   const navigate = useNavigate();
+
+  const totals = computeTotals(cart);
+  const methodMap: Record<string, PlatformOrder["paymentMethod"]> = {
+    card: "Card",
+    bank: "Bank Transfer",
+    wallet: "Wallet",
+    po: "Bank Transfer",
+  };
+
+  const complete = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    if (cart.length === 0) {
+      toast.error("Your cart is empty.");
+      return;
+    }
+    const orders = placeOrder(
+      { id: user.email, name: user.name, email: user.email },
+      methodMap[pay] ?? "Card",
+    );
+    setPlacedOrders(orders);
+    toast.success("Payment received — held safely in escrow by Aluminium Village.");
+  };
 
   useEffect(() => {
     setAuthChecked(true);
@@ -81,6 +111,73 @@ function Checkout() {
     );
   }
 
+  if (placedOrders) {
+    return (
+      <SiteLayout>
+        <section className="mx-auto max-w-xl px-4 sm:px-6 py-16 text-center">
+          <div className="mx-auto grid place-items-center size-16 rounded-full bg-emerald-100 text-emerald-600">
+            <Check className="size-8" />
+          </div>
+          <h1 className="mt-5 text-3xl font-bold tracking-tight">Order placed</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Your payment is held securely in escrow by Aluminium Village and released to the vendor
+            once your order is fulfilled.
+          </p>
+          <div className="mt-6 space-y-2 text-left">
+            {placedOrders.map((o) => (
+              <div
+                key={o.id}
+                className="flex items-center justify-between rounded-lg border bg-card px-4 py-3"
+              >
+                <div>
+                  <div className="text-sm font-semibold">#{o.orderNumber}</div>
+                  <div className="text-xs text-muted-foreground">{o.sellerName}</div>
+                </div>
+                <div className="text-sm font-bold">{o.total}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-7 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <button
+              onClick={() => navigate({ to: "/tracking" })}
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-brand text-brand-foreground px-5 py-2.5 text-sm font-semibold hover:bg-brand/90 transition"
+            >
+              <Package className="size-4" /> Track your order
+            </button>
+            <Link
+              to="/marketplace"
+              className="inline-flex items-center justify-center gap-2 rounded-md border bg-card px-5 py-2.5 text-sm font-semibold hover:bg-secondary transition"
+            >
+              Continue shopping
+            </Link>
+          </div>
+        </section>
+      </SiteLayout>
+    );
+  }
+
+  if (authChecked && cart.length === 0) {
+    return (
+      <SiteLayout>
+        <section className="mx-auto max-w-md px-4 sm:px-6 py-20 text-center">
+          <div className="mx-auto grid place-items-center size-14 rounded-full bg-brand/10 text-brand">
+            <ShoppingCart className="size-6" />
+          </div>
+          <h1 className="mt-5 text-2xl font-bold tracking-tight">Your cart is empty</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Browse the marketplace and add products to get started.
+          </p>
+          <Link
+            to="/marketplace"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-brand text-brand-foreground px-5 py-2.5 text-sm font-semibold hover:bg-brand/90 transition"
+          >
+            Go to Marketplace
+          </Link>
+        </section>
+      </SiteLayout>
+    );
+  }
+
   return (
     <SiteLayout>
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
@@ -92,10 +189,7 @@ function Checkout() {
         </header>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitted(true);
-          }}
+          onSubmit={complete}
           className="grid lg:grid-cols-[1fr_380px] gap-8"
         >
           {/* LEFT */}
@@ -200,38 +294,43 @@ function Checkout() {
             <div className="rounded-xl border bg-card p-5 shadow-sm">
               <h2 className="text-lg font-bold">Order Summary</h2>
               <ul className="mt-4 space-y-4">
-                <SummaryItem
-                  title="Extruded 6061-T6 Aluminium Pipe"
-                  meta={["Qty: 25 Units", "Length: 6 meters"]}
-                  price="₦1,240,000"
-                />
-                <SummaryItem
-                  title="Extruded 6063-T5 Aluminium Sheet"
-                  meta={["Qty: 10 Panels", "Size: 4' x 8'"]}
-                  price="₦850,000"
-                />
+                {cart.map((l) => (
+                  <li key={l.productId} className="flex gap-3">
+                    <div className="size-14 rounded-md bg-secondary shrink-0 overflow-hidden">
+                      <img src={l.image} alt="" className="size-full object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold leading-snug line-clamp-1">{l.name}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        Qty: {l.quantity} · {l.sellerName}
+                      </div>
+                    </div>
+                    <div className="text-sm font-bold whitespace-nowrap">
+                      {formatNaira(parseNaira(l.unitPrice) * l.quantity)}
+                    </div>
+                  </li>
+                ))}
               </ul>
               <div className="my-4 border-t" />
               <dl className="space-y-2 text-sm">
-                <Row k="Subtotal" v="₦2,090,000" />
-                <Row k="Shipping (Freight)" v="₦145,000" />
-                <Row k="Estimated Tax" v="₦167,200" />
+                <Row k="Subtotal" v={formatNaira(totals.subtotal)} />
+                <Row k="Escrow protection" v="Included" />
               </dl>
               <div className="mt-4 flex items-baseline justify-between">
                 <span className="text-lg font-semibold">Total</span>
-                <span className="text-2xl font-bold text-brand">₦2,402,200</span>
+                <span className="text-2xl font-bold text-brand">{formatNaira(totals.total)}</span>
               </div>
               <button
                 type="submit"
                 className="mt-5 w-full rounded-md bg-brand text-brand-foreground py-3 text-sm font-semibold hover:bg-brand/90 active:scale-[0.99] transition"
               >
-                {submitted ? "Order Placed ✓" : "Complete Order"}
+                Pay {formatNaira(totals.total)}
               </button>
               <div className="mt-4 rounded-md border bg-secondary/50 px-3 py-2.5 flex gap-2 text-xs">
                 <ShieldCheck className="size-4 text-brand shrink-0 mt-0.5" />
                 <span>
-                  <b>SSL Encrypted Checkout.</b> Your data is protected by industry-standard
-                  encryption.
+                  <b>Escrow-protected.</b> Aluminium Village holds your payment and releases it to the
+                  vendor only after your order is fulfilled.
                 </span>
               </div>
               <div className="mt-3 flex items-center justify-center gap-4 text-muted-foreground">
@@ -315,29 +414,6 @@ function Field({
         )}
       </div>
     </label>
-  );
-}
-
-function SummaryItem({
-  title,
-  meta,
-  price,
-}: {
-  title: string;
-  meta: string[];
-  price: string;
-}) {
-  return (
-    <li className="flex gap-3">
-      <div className="size-14 rounded-md bg-secondary shrink-0 grid place-items-center text-[10px] text-muted-foreground">
-        IMG
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-semibold leading-snug">{title}</div>
-        <div className="text-xs text-muted-foreground mt-0.5">{meta.join(" · ")}</div>
-      </div>
-      <div className="text-sm font-bold whitespace-nowrap">{price}</div>
-    </li>
   );
 }
 

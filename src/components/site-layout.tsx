@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import logoUrl from "@/assets/logo.png";
 import { useAuthUser, setAuthUser } from "@/lib/auth-store";
+import { useCart } from "@/lib/platform-store";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const nav: { to: string; label: string }[] = [
@@ -117,6 +118,17 @@ function AccountMenu() {
                 <div className="text-sm font-semibold">Hi, {user.name}</div>
                 <div className="text-xs text-muted-foreground truncate">{user.email}</div>
               </div>
+              {user.role && (
+                <>
+                  <MenuLink
+                    to="/admin"
+                    icon={ShieldCheck}
+                    title="Admin Suite"
+                    desc="Open your workspace dashboard"
+                  />
+                  <div className="border-t" />
+                </>
+              )}
               <MenuLink to="/dashboard" icon={LayoutDashboard} title="My Account" desc="Profile, addresses & payment" />
               <div className="border-t" />
               <MenuLink to="/tracking" icon={Package} title="Orders" desc="Track deliveries & history" />
@@ -236,7 +248,8 @@ function Logo({ withWordmark = false }: { withWordmark?: boolean }) {
 }
 
 export function SiteLayout({ children }: { children: ReactNode }) {
-  const [cartCount] = useState(2);
+  const cart = useCart();
+  const cartCount = cart.length;
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<{ from: "bot" | "user"; text: string }[]>([
     { from: "bot", text: "Hello! How can I help you with your aluminium requirements today?" },
