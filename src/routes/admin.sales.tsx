@@ -113,13 +113,17 @@ function AdminSalesPage() {
                     </div>
                   </td>
                   <td className="py-3 pr-3 text-slate-300">{o.buyerName}</td>
-                  {role === "overall" && <td className="py-3 pr-3 text-slate-300">{o.sellerName}</td>}
+                  {role === "overall" && (
+                    <td className="py-3 pr-3 text-slate-300">{o.sellerName}</td>
+                  )}
                   <td className="py-3 pr-3 text-slate-400">
                     {o.items.reduce((n, it) => n + it.quantity, 0)} unit(s)
                   </td>
                   <td className="py-3 pr-3 font-semibold text-white">{o.total}</td>
                   <td className="py-3 pr-3 text-rose-300">-{o.platformFee}</td>
-                  <td className="py-3 pr-3 font-semibold text-emerald-400">{formatNaira(payout)}</td>
+                  <td className="py-3 pr-3 font-semibold text-emerald-400">
+                    {formatNaira(payout)}
+                  </td>
                   <td className="py-3">
                     <StatusPill status={o.paymentStatus} />
                   </td>

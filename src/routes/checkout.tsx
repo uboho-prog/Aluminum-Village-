@@ -188,10 +188,7 @@ function Checkout() {
           </p>
         </header>
 
-        <form
-          onSubmit={complete}
-          className="grid lg:grid-cols-[1fr_380px] gap-8"
-        >
+        <form onSubmit={complete} className="grid lg:grid-cols-[1fr_380px] gap-8">
           {/* LEFT */}
           <div className="space-y-6">
             <Section step={1} title="Account Information">
@@ -300,7 +297,9 @@ function Checkout() {
                       <img src={l.image} alt="" className="size-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold leading-snug line-clamp-1">{l.name}</div>
+                      <div className="text-sm font-semibold leading-snug line-clamp-1">
+                        {l.name}
+                      </div>
                       <div className="text-xs text-muted-foreground mt-0.5">
                         Qty: {l.quantity} · {l.sellerName}
                       </div>
@@ -329,8 +328,8 @@ function Checkout() {
               <div className="mt-4 rounded-md border bg-secondary/50 px-3 py-2.5 flex gap-2 text-xs">
                 <ShieldCheck className="size-4 text-brand shrink-0 mt-0.5" />
                 <span>
-                  <b>Escrow-protected.</b> Aluminium Village holds your payment and releases it to the
-                  vendor only after your order is fulfilled.
+                  <b>Escrow-protected.</b> Aluminium Village holds your payment and releases it to
+                  the vendor only after your order is fulfilled.
                 </span>
               </div>
               <div className="mt-3 flex items-center justify-center gap-4 text-muted-foreground">

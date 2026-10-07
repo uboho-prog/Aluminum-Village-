@@ -24,7 +24,12 @@ import {
 } from "lucide-react";
 import logoUrl from "@/assets/logo.png";
 import { setAuthUser, ADMIN_ROLE_LABEL, getAuthUser, type AdminRole } from "@/lib/auth-store";
-import { ADMIN_NAV_ACCESS, canAccessAdminSection, canAccessAdminPath, isAdminRole } from "@/lib/admin-access";
+import {
+  ADMIN_NAV_ACCESS,
+  canAccessAdminSection,
+  canAccessAdminPath,
+  isAdminRole,
+} from "@/lib/admin-access";
 
 const ADMIN_NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
@@ -95,8 +100,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   // localStorage is read synchronously (not via an effect) so the frame
   // after mount can already decide.
   const stored = getAuthUser();
-  const role: AdminRole | null =
-    stored && isAdminRole(stored.role) ? stored.role : null;
+  const role: AdminRole | null = stored && isAdminRole(stored.role) ? stored.role : null;
 
   // Route guard: unauthenticated users go to their suite sign-in,
   // authenticated users are bounced off sections their suite cannot access.
@@ -121,16 +125,10 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       {/* Logo area */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-slate-700/50">
         <Link to="/" className="flex items-center gap-3">
-          <img
-            src={logoUrl}
-            alt="Aluminium Village"
-            className="size-9 object-contain"
-          />
+          <img src={logoUrl} alt="Aluminium Village" className="size-9 object-contain" />
           {!collapsed && (
             <div>
-              <div className="text-sm font-bold text-white tracking-tight">
-                ALUMINIUM VILLAGE
-              </div>
+              <div className="text-sm font-bold text-white tracking-tight">ALUMINIUM VILLAGE</div>
               <div className="text-[10px] font-semibold tracking-[0.2em] text-slate-400">
                 {role ? ADMIN_ROLE_LABEL[role].toUpperCase() : "ADMIN NERVE"}
               </div>
@@ -191,10 +189,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       {/* Mobile sidebar overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/60"
-            onClick={() => setMobileOpen(false)}
-          />
+          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
           <aside className="absolute left-0 top-0 bottom-0 w-64 bg-[#1e293b] border-r border-slate-700/50">
             <div className="flex items-center justify-end px-4 py-3">
               <button
@@ -225,9 +220,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               className="p-2 rounded-lg hover:bg-slate-700 text-slate-400 hidden lg:block"
             >
               <ChevronLeft
-                className={`size-5 transition-transform ${
-                  collapsed ? "rotate-180" : ""
-                }`}
+                className={`size-5 transition-transform ${collapsed ? "rotate-180" : ""}`}
               />
             </button>
             <div className="relative hidden sm:block">

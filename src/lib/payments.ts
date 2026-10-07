@@ -99,9 +99,7 @@ export function initiatePayment(order: PlatformOrder): PaymentTransaction {
     orderNumber: order.orderNumber,
     amount: order.total,
     platformFee: order.platformFee,
-    sellerAmount: formatNaira(
-      parseNaira(order.subtotal) - parseNaira(order.platformFee),
-    ),
+    sellerAmount: formatNaira(parseNaira(order.subtotal) - parseNaira(order.platformFee)),
     status: "Completed",
     type: "Customer Payment",
     paystackReference: order.paystackReference,

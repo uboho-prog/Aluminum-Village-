@@ -261,7 +261,13 @@ const SEED: PlatformState = {
       bio: "15+ years fabricating bespoke aluminium window, door and curtain-wall systems for residential and commercial projects across Lagos and Abuja.",
       avatar: img.pro1,
       location: "Lagos, NG",
-      skills: ["Window Systems", "Curtain Walls", "Thermal Break", "Facade Engineering", "CNC Cutting"],
+      skills: [
+        "Window Systems",
+        "Curtain Walls",
+        "Thermal Break",
+        "Facade Engineering",
+        "CNC Cutting",
+      ],
       services: demoServices,
       portfolio: demoPortfolio,
       hourlyRate: "₦35,000",
@@ -1003,9 +1009,7 @@ export function approveApplication(
         applications: {
           ...s.applications,
           business: s.applications.business.map((a) =>
-            a.id === id
-              ? { ...a, status: "Approved", reviewedAt: now, reviewedBy: reviewer }
-              : a,
+            a.id === id ? { ...a, status: "Approved", reviewedAt: now, reviewedBy: reviewer } : a,
           ),
         },
       };
@@ -1059,7 +1063,9 @@ export function rejectApplication(
     applications: {
       ...s.applications,
       [kind]: s.applications[kind].map((a: BusinessApplication | ProfessionalApplication) =>
-        a.id === id ? { ...a, status: "Rejected", reviewedAt: now, reviewedBy: reviewer, notes } : a,
+        a.id === id
+          ? { ...a, status: "Rejected", reviewedAt: now, reviewedBy: reviewer, notes }
+          : a,
       ),
     },
   }));
@@ -1108,7 +1114,13 @@ export function releasePaymentToVendor(orderId: string) {
       ...s,
       orders: s.orders.map((o) =>
         o.id === orderId
-          ? { ...o, paymentStatus: "Released", status: "Completed", escrowReleaseDate: now, updatedAt: now }
+          ? {
+              ...o,
+              paymentStatus: "Released",
+              status: "Completed",
+              escrowReleaseDate: now,
+              updatedAt: now,
+            }
           : o,
       ),
       payments: [payout, ...s.payments],

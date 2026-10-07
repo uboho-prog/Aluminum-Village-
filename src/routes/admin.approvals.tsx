@@ -52,9 +52,16 @@ function AdminApprovalsPage() {
   const [noteAction, setNoteAction] = useState<NoteAction | null>(null);
   const [note, setNote] = useState("");
 
-  const pendingBiz = applications.business.filter((a) => a.status === "Pending" || a.status === "Under Review");
-  const pendingPro = applications.professional.filter((a) => a.status === "Pending" || a.status === "Under Review");
-  const pendingProducts = useMemo(() => products.filter((p) => p.status === "Pending Approval"), [products]);
+  const pendingBiz = applications.business.filter(
+    (a) => a.status === "Pending" || a.status === "Under Review",
+  );
+  const pendingPro = applications.professional.filter(
+    (a) => a.status === "Pending" || a.status === "Under Review",
+  );
+  const pendingProducts = useMemo(
+    () => products.filter((p) => p.status === "Pending Approval"),
+    [products],
+  );
 
   const openNote = (action: NoteAction) => {
     setNote("");
@@ -78,13 +85,31 @@ function AdminApprovalsPage() {
       />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="BUSINESS APPLICATIONS" value={pendingBiz.length} icon={Building2} tone="sky" />
-        <StatCard label="PROFESSIONAL APPLICATIONS" value={pendingPro.length} icon={UserCircle} tone="violet" />
-        <StatCard label="PRODUCTS PENDING" value={pendingProducts.length} icon={Package} tone="amber" />
+        <StatCard
+          label="BUSINESS APPLICATIONS"
+          value={pendingBiz.length}
+          icon={Building2}
+          tone="sky"
+        />
+        <StatCard
+          label="PROFESSIONAL APPLICATIONS"
+          value={pendingPro.length}
+          icon={UserCircle}
+          tone="violet"
+        />
+        <StatCard
+          label="PRODUCTS PENDING"
+          value={pendingProducts.length}
+          icon={Package}
+          tone="amber"
+        />
       </div>
 
       {/* Business applications */}
-      <AdminCard title="Business Applications" subtitle="New vendors applying to sell on the platform">
+      <AdminCard
+        title="Business Applications"
+        subtitle="New vendors applying to sell on the platform"
+      >
         {pendingBiz.length === 0 ? (
           <EmptyState icon={BadgeCheck} title="No pending business applications" />
         ) : (
@@ -101,7 +126,8 @@ function AdminApprovalsPage() {
                       {a.ownerName} · {a.category} · {a.email} · {a.phone}
                     </div>
                     <div className="mt-1 text-xs text-slate-500">
-                      {a.address} · CAC {a.cacNumber} · Bank: {a.bankDetails.bankName} {a.bankDetails.accountNumber}
+                      {a.address} · CAC {a.cacNumber} · Bank: {a.bankDetails.bankName}{" "}
+                      {a.bankDetails.accountNumber}
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
@@ -136,7 +162,10 @@ function AdminApprovalsPage() {
       </AdminCard>
 
       {/* Professional applications */}
-      <AdminCard title="Professional Applications" subtitle="Individuals applying to render services">
+      <AdminCard
+        title="Professional Applications"
+        subtitle="Individuals applying to render services"
+      >
         {pendingPro.length === 0 ? (
           <EmptyState icon={BadgeCheck} title="No pending professional applications" />
         ) : (
@@ -154,7 +183,10 @@ function AdminApprovalsPage() {
                     </div>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {a.skills.map((s) => (
-                        <span key={s} className="rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">
+                        <span
+                          key={s}
+                          className="rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300"
+                        >
                           {s}
                         </span>
                       ))}
@@ -192,7 +224,10 @@ function AdminApprovalsPage() {
       </AdminCard>
 
       {/* Product approvals */}
-      <AdminCard title="Product Approvals" subtitle="Products awaiting review before appearing on the marketplace">
+      <AdminCard
+        title="Product Approvals"
+        subtitle="Products awaiting review before appearing on the marketplace"
+      >
         {pendingProducts.length === 0 ? (
           <EmptyState icon={BadgeCheck} title="No products pending approval" />
         ) : (
@@ -200,7 +235,11 @@ function AdminApprovalsPage() {
             {pendingProducts.map((p) => (
               <div key={p.id} className="rounded-lg border border-slate-700 bg-slate-800/40 p-4">
                 <div className="flex gap-3">
-                  <img src={p.images[0]} alt="" className="size-16 rounded-md object-cover bg-slate-700 shrink-0" />
+                  <img
+                    src={p.images[0]}
+                    alt=""
+                    className="size-16 rounded-md object-cover bg-slate-700 shrink-0"
+                  />
                   <div className="min-w-0 flex-1">
                     <h3 className="font-bold text-white truncate">{p.name}</h3>
                     <div className="text-xs text-slate-400">

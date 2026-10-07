@@ -61,7 +61,8 @@ function AdminPaymentsPage() {
     return { processed, held, released, commission };
   }, [orders]);
 
-  const payout = (o: PlatformOrder) => formatNaira(parseNaira(o.subtotal) - parseNaira(o.platformFee));
+  const payout = (o: PlatformOrder) =>
+    formatNaira(parseNaira(o.subtotal) - parseNaira(o.platformFee));
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
@@ -88,16 +89,41 @@ function AdminPaymentsPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="TOTAL PROCESSED" value={formatNaira(totals.processed)} icon={CircleDollarSign} tone="sky" />
-        <StatCard label="HELD IN ESCROW" value={formatNaira(totals.held)} hint={`${escrow.length} order(s)`} icon={Clock} tone="amber" />
-        <StatCard label="RELEASED TO VENDORS" value={formatNaira(totals.released)} icon={Wallet} tone="emerald" />
-        <StatCard label="PLATFORM COMMISSION" value={formatNaira(totals.commission)} icon={Receipt} tone="violet" />
+        <StatCard
+          label="TOTAL PROCESSED"
+          value={formatNaira(totals.processed)}
+          icon={CircleDollarSign}
+          tone="sky"
+        />
+        <StatCard
+          label="HELD IN ESCROW"
+          value={formatNaira(totals.held)}
+          hint={`${escrow.length} order(s)`}
+          icon={Clock}
+          tone="amber"
+        />
+        <StatCard
+          label="RELEASED TO VENDORS"
+          value={formatNaira(totals.released)}
+          icon={Wallet}
+          tone="emerald"
+        />
+        <StatCard
+          label="PLATFORM COMMISSION"
+          value={formatNaira(totals.commission)}
+          icon={Receipt}
+          tone="violet"
+        />
       </div>
 
       {/* Escrow holds */}
       <AdminCard title="Funds held in escrow" subtitle="Awaiting release to the vendor">
         {escrow.length === 0 ? (
-          <EmptyState icon={ShieldCheck} title="No funds in escrow" hint="New orders will appear here until you release them." />
+          <EmptyState
+            icon={ShieldCheck}
+            title="No funds in escrow"
+            hint="New orders will appear here until you release them."
+          />
         ) : (
           <AdminTable
             head={
@@ -112,13 +138,19 @@ function AdminPaymentsPage() {
             }
           >
             {escrow.map((o) => (
-              <tr key={o.id} className="border-b border-slate-700/30 last:border-0 hover:bg-slate-800/50 transition-colors">
+              <tr
+                key={o.id}
+                className="border-b border-slate-700/30 last:border-0 hover:bg-slate-800/50 transition-colors"
+              >
                 <td className="py-3 pr-3">
                   <div className="font-semibold text-white">#{o.orderNumber}</div>
-                  <div className="text-[11px] text-slate-500">{new Date(o.createdAt).toLocaleDateString()}</div>
+                  <div className="text-[11px] text-slate-500">
+                    {new Date(o.createdAt).toLocaleDateString()}
+                  </div>
                 </td>
                 <td className="py-3 pr-3 text-slate-300">
-                  <span className="text-white">{o.buyerName}</span> → <span className="text-white">{o.sellerName}</span>
+                  <span className="text-white">{o.buyerName}</span> →{" "}
+                  <span className="text-white">{o.sellerName}</span>
                 </td>
                 <td className="py-3 pr-3 font-semibold text-white">{o.total}</td>
                 <td className="py-3 pr-3 text-violet-300">{o.platformFee}</td>
@@ -184,15 +216,22 @@ function AdminPaymentsPage() {
             }
           >
             {payments.map((t) => (
-              <tr key={t.id} className="border-b border-slate-700/30 last:border-0 hover:bg-slate-800/50 transition-colors">
-                <td className="py-3 pr-3 font-mono text-[11px] text-slate-400">{t.paystackReference}</td>
+              <tr
+                key={t.id}
+                className="border-b border-slate-700/30 last:border-0 hover:bg-slate-800/50 transition-colors"
+              >
+                <td className="py-3 pr-3 font-mono text-[11px] text-slate-400">
+                  {t.paystackReference}
+                </td>
                 <td className="py-3 pr-3 text-slate-300">{t.type}</td>
                 <td className="py-3 pr-3 text-slate-400">#{t.orderNumber}</td>
                 <td className="py-3 pr-3 font-semibold text-white">{t.amount}</td>
                 <td className="py-3 pr-3">
                   <StatusPill status={t.status} />
                 </td>
-                <td className="py-3 text-slate-400">{new Date(t.createdAt).toLocaleDateString()}</td>
+                <td className="py-3 text-slate-400">
+                  {new Date(t.createdAt).toLocaleDateString()}
+                </td>
               </tr>
             ))}
           </AdminTable>

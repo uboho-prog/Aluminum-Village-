@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { img } from "@/lib/images";
-import { BadgeCheck, MapPin, Search, Star, Trophy, Users2, ExternalLink, ArrowRight } from "lucide-react";
+import {
+  BadgeCheck,
+  MapPin,
+  Search,
+  Star,
+  Trophy,
+  Users2,
+  ExternalLink,
+  ArrowRight,
+} from "lucide-react";
 import { useState } from "react";
 import { useActiveProfessionals } from "@/lib/platform-store";
 
@@ -49,7 +58,9 @@ function Directory() {
       <section className="bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Verified Aluminium<br />Professionals
+            Verified Aluminium
+            <br />
+            Professionals
           </h1>
           <p className="mt-4 max-w-2xl text-muted-foreground">
             Connect with Africa's leading fabricators, suppliers, and installation specialists.
@@ -104,7 +115,10 @@ function Directory() {
               </div>
             )}
             {pros.map((p) => (
-              <article key={p.id} className="rounded-xl border bg-card p-5 group hover:shadow-md transition-shadow">
+              <article
+                key={p.id}
+                className="rounded-xl border bg-card p-5 group hover:shadow-md transition-shadow"
+              >
                 <div className="flex items-start justify-between gap-3">
                   <div className="size-14 rounded-md overflow-hidden bg-secondary shrink-0">
                     <img src={p.avatar} alt={p.fullName} className="size-full object-cover" />
@@ -129,7 +143,10 @@ function Directory() {
                 </div>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {p.skills.slice(0, 3).map((t) => (
-                    <span key={t} className="text-[11px] rounded-md border bg-background px-2 py-0.5">
+                    <span
+                      key={t}
+                      className="text-[11px] rounded-md border bg-background px-2 py-0.5"
+                    >
                       {t}
                     </span>
                   ))}

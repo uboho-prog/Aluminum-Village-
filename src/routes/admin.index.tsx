@@ -96,7 +96,10 @@ function RecentOrders({ orders, showVendor }: { orders: PlatformOrder[]; showVen
       }
     >
       {orders.slice(0, 5).map((o) => (
-        <tr key={o.id} className="border-b border-slate-700/30 last:border-0 hover:bg-slate-800/50 transition-colors">
+        <tr
+          key={o.id}
+          className="border-b border-slate-700/30 last:border-0 hover:bg-slate-800/50 transition-colors"
+        >
           <td className="py-3 pr-3 font-semibold text-white">#{o.orderNumber}</td>
           <td className="py-3 pr-3 text-slate-300">{showVendor ? o.sellerName : o.buyerName}</td>
           <td className="py-3 pr-3 font-semibold text-white">{o.total}</td>
@@ -119,7 +122,10 @@ function BusinessDashboard() {
   const stats = useMemo(() => {
     const active = products.filter((p) => p.status === "Active").length;
     const pending = products.filter((p) => p.status === "Pending Approval").length;
-    const revenue = orders.reduce((s, o) => s + parseNaira(o.subtotal) - parseNaira(o.platformFee), 0);
+    const revenue = orders.reduce(
+      (s, o) => s + parseNaira(o.subtotal) - parseNaira(o.platformFee),
+      0,
+    );
     const escrow = orders
       .filter((o) => o.paymentStatus === "Escrow")
       .reduce((s, o) => s + parseNaira(o.subtotal) - parseNaira(o.platformFee), 0);
@@ -149,7 +155,12 @@ function BusinessDashboard() {
           tone="sky"
         />
         <StatCard label="ORDERS" value={stats.orders} icon={ShoppingBag} tone="violet" />
-        <StatCard label="NET REVENUE" value={formatNaira(stats.revenue)} icon={TrendingUp} tone="emerald" />
+        <StatCard
+          label="NET REVENUE"
+          value={formatNaira(stats.revenue)}
+          icon={TrendingUp}
+          tone="emerald"
+        />
         <StatCard
           label="IN ESCROW"
           value={formatNaira(stats.escrow)}
@@ -164,7 +175,10 @@ function BusinessDashboard() {
           className="lg:col-span-2"
           title="Recent Orders"
           actions={
-            <Link to="/admin/sales" className="text-xs font-semibold text-[#4d8dff] hover:underline">
+            <Link
+              to="/admin/sales"
+              className="text-xs font-semibold text-[#4d8dff] hover:underline"
+            >
               View all →
             </Link>
           }
@@ -238,9 +252,19 @@ function ProfessionalDashboard() {
               icon={CheckCircle2}
               tone="emerald"
             />
-            <StatCard label="ACTIVE SERVICES" value={stats.activeServices} icon={Briefcase} tone="sky" />
+            <StatCard
+              label="ACTIVE SERVICES"
+              value={stats.activeServices}
+              icon={Briefcase}
+              tone="sky"
+            />
             <StatCard label="NEW REQUESTS" value={stats.newReqs} icon={Inbox} tone="amber" />
-            <StatCard label="COMPLETED JOBS" value={profile.completedJobs} icon={TrendingUp} tone="violet" />
+            <StatCard
+              label="COMPLETED JOBS"
+              value={profile.completedJobs}
+              icon={TrendingUp}
+              tone="violet"
+            />
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -248,13 +272,20 @@ function ProfessionalDashboard() {
               className="lg:col-span-2"
               title="Recent Requests"
               actions={
-                <Link to="/admin/requests" className="text-xs font-semibold text-[#4d8dff] hover:underline">
+                <Link
+                  to="/admin/requests"
+                  className="text-xs font-semibold text-[#4d8dff] hover:underline"
+                >
                   View all →
                 </Link>
               }
             >
               {requests.length === 0 ? (
-                <EmptyState icon={Inbox} title="No requests yet" hint="Requests from your public profile appear here." />
+                <EmptyState
+                  icon={Inbox}
+                  title="No requests yet"
+                  hint="Requests from your public profile appear here."
+                />
               ) : (
                 <div className="space-y-3">
                   {requests.slice(0, 4).map((r) => (
@@ -263,7 +294,9 @@ function ProfessionalDashboard() {
                       className="flex items-center justify-between gap-3 rounded-lg bg-slate-800/50 border border-slate-700/30 p-3"
                     >
                       <div className="min-w-0">
-                        <div className="text-sm font-semibold text-white truncate">{r.serviceTitle}</div>
+                        <div className="text-sm font-semibold text-white truncate">
+                          {r.serviceTitle}
+                        </div>
                         <div className="text-xs text-slate-400 truncate">
                           {r.clientName} · {r.budget}
                         </div>
@@ -322,8 +355,18 @@ function OverallDashboard() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="PLATFORM GMV" value={formatNaira(stats.gmv)} icon={CircleDollarSign} tone="sky" />
-        <StatCard label="COMMISSION EARNED" value={formatNaira(stats.commission)} icon={TrendingUp} tone="emerald" />
+        <StatCard
+          label="PLATFORM GMV"
+          value={formatNaira(stats.gmv)}
+          icon={CircleDollarSign}
+          tone="sky"
+        />
+        <StatCard
+          label="COMMISSION EARNED"
+          value={formatNaira(stats.commission)}
+          icon={TrendingUp}
+          tone="emerald"
+        />
         <StatCard
           label="HELD IN ESCROW"
           value={formatNaira(stats.escrow)}
@@ -331,7 +374,12 @@ function OverallDashboard() {
           icon={Clock}
           tone="amber"
         />
-        <StatCard label="PENDING APPROVALS" value={stats.pendingApprovals} icon={ShieldCheck} tone="violet" />
+        <StatCard
+          label="PENDING APPROVALS"
+          value={stats.pendingApprovals}
+          icon={ShieldCheck}
+          tone="violet"
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -346,7 +394,10 @@ function OverallDashboard() {
           className="lg:col-span-2"
           title="Recent Orders"
           actions={
-            <Link to="/admin/payments" className="text-xs font-semibold text-[#4d8dff] hover:underline">
+            <Link
+              to="/admin/payments"
+              className="text-xs font-semibold text-[#4d8dff] hover:underline"
+            >
               Payments →
             </Link>
           }

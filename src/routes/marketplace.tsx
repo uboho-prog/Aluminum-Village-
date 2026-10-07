@@ -94,12 +94,17 @@ function Marketplace() {
     const result = products.filter((p) => {
       if (activeCat !== "all" && p.category !== activeCat) return false;
       if (q) {
-        const hay = `${p.name} ${p.sellerName} ${p.category} ${Object.values(p.specifications).join(" ")}`.toLowerCase();
+        const hay =
+          `${p.name} ${p.sellerName} ${p.category} ${Object.values(p.specifications).join(" ")}`.toLowerCase();
         if (!hay.includes(q)) return false;
       }
-      if (selectedGrades.length && !selectedGrades.some((g) => (p.specifications.Grade ?? "").includes(g)))
+      if (
+        selectedGrades.length &&
+        !selectedGrades.some((g) => (p.specifications.Grade ?? "").includes(g))
+      )
         return false;
-      if (selectedFinish.length && !selectedFinish.includes(p.specifications.Finish ?? "")) return false;
+      if (selectedFinish.length && !selectedFinish.includes(p.specifications.Finish ?? ""))
+        return false;
       const wallSpec = p.specifications.Wall;
       if (wallSpec) {
         const w = parseFloat(wallSpec);
@@ -110,7 +115,8 @@ function Marketplace() {
 
     const sorted = [...result];
     if (sort === "price-asc") sorted.sort((a, b) => parseNaira(a.price) - parseNaira(b.price));
-    else if (sort === "price-desc") sorted.sort((a, b) => parseNaira(b.price) - parseNaira(a.price));
+    else if (sort === "price-desc")
+      sorted.sort((a, b) => parseNaira(b.price) - parseNaira(a.price));
     else if (sort === "newest") sorted.sort((a, b) => b.submittedAt.localeCompare(a.submittedAt));
     else sorted.sort((a, b) => b.orders - a.orders);
     return sorted;
@@ -120,7 +126,10 @@ function Marketplace() {
   const currentPage = Math.min(page, pageCount);
   const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
   const activeFilterCount =
-    selectedGrades.length + selectedFinish.length + (maxWall < 10 ? 1 : 0) + (activeCat !== "all" ? 1 : 0);
+    selectedGrades.length +
+    selectedFinish.length +
+    (maxWall < 10 ? 1 : 0) +
+    (activeCat !== "all" ? 1 : 0);
 
   return (
     <SiteLayout>
@@ -141,7 +150,8 @@ function Marketplace() {
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             Source extrusions, sheets, doors and fittings from verified Nigerian suppliers. Every
-            order is escrow-protected — your payment is held by Aluminium Village until you're served.
+            order is escrow-protected — your payment is held by Aluminium Village until you're
+            served.
           </p>
           <div className="mt-5 flex max-w-xl items-center gap-2 rounded-lg border bg-background px-4 py-2.5 focus-within:ring-2 focus-within:ring-brand/30">
             <Search className="size-4 text-muted-foreground" />
@@ -155,7 +165,10 @@ function Marketplace() {
               className="flex-1 bg-transparent text-sm outline-none"
             />
             {query && (
-              <button onClick={() => setQuery("")} className="text-muted-foreground hover:text-foreground">
+              <button
+                onClick={() => setQuery("")}
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <X className="size-4" />
               </button>
             )}
@@ -195,7 +208,10 @@ function Marketplace() {
                 <div className="text-xs font-bold tracking-wider text-muted-foreground uppercase">
                   Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
                 </div>
-                <button onClick={clearFilters} className="text-xs font-semibold text-brand hover:underline">
+                <button
+                  onClick={clearFilters}
+                  className="text-xs font-semibold text-brand hover:underline"
+                >
                   Clear
                 </button>
               </div>
@@ -207,7 +223,10 @@ function Marketplace() {
                     {grades.map((g) => {
                       const checked = selectedGrades.includes(g);
                       return (
-                        <label key={g} className="flex items-center gap-2.5 text-sm cursor-pointer group">
+                        <label
+                          key={g}
+                          className="flex items-center gap-2.5 text-sm cursor-pointer group"
+                        >
                           <span
                             className={`grid place-items-center size-4 rounded border transition ${
                               checked
@@ -216,8 +235,17 @@ function Marketplace() {
                             }`}
                           >
                             {checked && (
-                              <svg viewBox="0 0 12 12" className="size-3 stroke-current" fill="none" strokeWidth="2">
-                                <path d="M2.5 6.5l2.5 2.5 4.5-5" strokeLinecap="round" strokeLinejoin="round" />
+                              <svg
+                                viewBox="0 0 12 12"
+                                className="size-3 stroke-current"
+                                fill="none"
+                                strokeWidth="2"
+                              >
+                                <path
+                                  d="M2.5 6.5l2.5 2.5 4.5-5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
                               </svg>
                             )}
                           </span>
@@ -242,7 +270,10 @@ function Marketplace() {
                     {finishes.map((f) => {
                       const checked = selectedFinish.includes(f);
                       return (
-                        <label key={f} className="flex items-center gap-2.5 text-sm cursor-pointer group">
+                        <label
+                          key={f}
+                          className="flex items-center gap-2.5 text-sm cursor-pointer group"
+                        >
                           <span
                             className={`grid place-items-center size-4 rounded border transition ${
                               checked
@@ -251,8 +282,17 @@ function Marketplace() {
                             }`}
                           >
                             {checked && (
-                              <svg viewBox="0 0 12 12" className="size-3 stroke-current" fill="none" strokeWidth="2">
-                                <path d="M2.5 6.5l2.5 2.5 4.5-5" strokeLinecap="round" strokeLinejoin="round" />
+                              <svg
+                                viewBox="0 0 12 12"
+                                className="size-3 stroke-current"
+                                fill="none"
+                                strokeWidth="2"
+                              >
+                                <path
+                                  d="M2.5 6.5l2.5 2.5 4.5-5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
                               </svg>
                             )}
                           </span>
@@ -314,8 +354,8 @@ function Marketplace() {
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="text-sm text-muted-foreground">
-                <span className="font-semibold text-foreground">{filtered.length}</span>{" "}
-                product{filtered.length === 1 ? "" : "s"}
+                <span className="font-semibold text-foreground">{filtered.length}</span> product
+                {filtered.length === 1 ? "" : "s"}
                 {activeCat !== "all" && (
                   <>
                     {" "}
@@ -345,7 +385,9 @@ function Marketplace() {
               <div className="mt-10 rounded-xl border bg-card p-12 text-center">
                 <Package className="mx-auto size-10 text-muted-foreground" />
                 <div className="mt-3 font-semibold">No products match your filters</div>
-                <p className="mt-1 text-sm text-muted-foreground">Try clearing filters or searching for something else.</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Try clearing filters or searching for something else.
+                </p>
                 <button
                   onClick={clearFilters}
                   className="mt-4 rounded-md border bg-card px-4 py-2 text-sm font-semibold hover:bg-secondary"
@@ -357,7 +399,8 @@ function Marketplace() {
               <div className="mt-6 grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {pageItems.map((p) => {
                   const inCart = cartLines.some((l) => l.productId === p.id);
-                  const badge = p.orders > 40 ? "BEST SELLER" : p.stock > 0 ? "IN STOCK" : "OUT OF STOCK";
+                  const badge =
+                    p.orders > 40 ? "BEST SELLER" : p.stock > 0 ? "IN STOCK" : "OUT OF STOCK";
                   const badgeTone = p.orders > 40 ? "brand" : p.stock > 0 ? "emerald" : "muted";
                   return (
                     <article
@@ -389,12 +432,18 @@ function Marketplace() {
                         )}
                       </div>
                       <div className="p-4 flex flex-col flex-1">
-                        <h3 className="text-sm font-semibold leading-snug line-clamp-1">{p.name}</h3>
+                        <h3 className="text-sm font-semibold leading-snug line-clamp-1">
+                          {p.name}
+                        </h3>
                         <div className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
                           <Store className="size-3" /> {p.sellerName}
                         </div>
                         <div className="mt-3 rounded-lg border bg-secondary/40 p-3 grid grid-cols-2 gap-2 text-[11px]">
-                          <Spec icon={BadgeCheck} k="Grade" v={p.specifications.Grade ?? p.category} />
+                          <Spec
+                            icon={BadgeCheck}
+                            k="Grade"
+                            v={p.specifications.Grade ?? p.category}
+                          />
                           <Spec icon={Ruler} k="Wall" v={p.specifications.Wall ?? "—"} />
                           <Spec icon={Layers} k="Finish" v={p.specifications.Finish ?? "—"} />
                           <Spec icon={Package} k="Qty" v={p.unit} />
@@ -454,7 +503,9 @@ function Marketplace() {
                       key={n}
                       onClick={() => setPage(n)}
                       className={`size-9 rounded-md text-sm font-medium transition active:scale-95 ${
-                        currentPage === n ? "bg-brand text-brand-foreground" : "border bg-card hover:bg-secondary"
+                        currentPage === n
+                          ? "bg-brand text-brand-foreground"
+                          : "border bg-card hover:bg-secondary"
                       }`}
                     >
                       {n}

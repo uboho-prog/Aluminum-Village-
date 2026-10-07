@@ -12,7 +12,8 @@ export const Route = createFileRoute("/join")({
       { title: "Join as a Professional | Aluminium Village" },
       {
         name: "description",
-        content: "Register as a verified professional and grow your business with high-quality leads.",
+        content:
+          "Register as a verified professional and grow your business with high-quality leads.",
       },
     ],
   }),
@@ -95,8 +96,9 @@ function Join() {
           </div>
           <h1 className="mt-5 text-3xl font-bold tracking-tight">Application received</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Thanks, {repName}. Our team reviews {accountType === "business" ? "business" : "professional"}{" "}
-            applications within 24–48 hours. Once approved, you'll be live on Aluminium Village.
+            Thanks, {repName}. Our team reviews{" "}
+            {accountType === "business" ? "business" : "professional"} applications within 24–48
+            hours. Once approved, you'll be live on Aluminium Village.
           </p>
           <div className="mt-7 flex flex-col gap-2 sm:flex-row sm:justify-center">
             <button
@@ -150,9 +152,7 @@ function Join() {
                 >
                   {done ? <Check className="size-4" /> : n}
                 </div>
-                <span
-                  className={`text-sm ${active ? "font-semibold" : "text-muted-foreground"}`}
-                >
+                <span className={`text-sm ${active ? "font-semibold" : "text-muted-foreground"}`}>
                   {label}
                 </span>
                 {i < steps.length - 1 && <div className="w-8 h-px bg-border" />}
@@ -170,8 +170,16 @@ function Join() {
               </p>
               <div className="mt-6 grid sm:grid-cols-2 gap-4">
                 {[
-                  { id: "business", title: "Business / Company", desc: "Registered fabricator, supplier, or installation firm." },
-                  { id: "professional", title: "Professional", desc: "Freelance technician, artisan, or consultant." },
+                  {
+                    id: "business",
+                    title: "Business / Company",
+                    desc: "Registered fabricator, supplier, or installation firm.",
+                  },
+                  {
+                    id: "professional",
+                    title: "Professional",
+                    desc: "Freelance technician, artisan, or consultant.",
+                  },
                 ].map((opt) => (
                   <button
                     key={opt.id}
@@ -196,7 +204,8 @@ function Join() {
                 {accountType === "business" ? "Business Details" : "Professional Details"}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Tell us about your {accountType === "business" ? "company" : "specialization"} and service area.
+                Tell us about your {accountType === "business" ? "company" : "specialization"} and
+                service area.
               </p>
               <div className="mt-6 grid sm:grid-cols-2 gap-4">
                 {accountType === "business" && (
@@ -264,7 +273,9 @@ function Join() {
                 </div>
                 <div className="sm:col-span-2">
                   <label className="text-xs font-medium text-muted-foreground">
-                    {accountType === "business" ? "Business Description" : "Professional Description / Skills"}
+                    {accountType === "business"
+                      ? "Business Description"
+                      : "Professional Description / Skills"}
                   </label>
                   <textarea
                     rows={4}
@@ -285,14 +296,22 @@ function Join() {
                 Upload the following documents. Our compliance team reviews within 24–48 hours.
               </p>
               <div className="mt-6 space-y-4">
-                <Dropzone label="Business License / Registration *" hint="PDF, JPG, PNG (Max 10MB)" />
+                <Dropzone
+                  label="Business License / Registration *"
+                  hint="PDF, JPG, PNG (Max 10MB)"
+                />
                 <FilePick label="Tax Clearance Certificate *" placeholder="Upload certificate..." />
                 <FilePick
                   label="Professional Certifications (Optional)"
                   placeholder="ISO, ASTM, or industry specific certs..."
                 />
                 <label className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <input type="checkbox" className="mt-0.5" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+                  <input
+                    type="checkbox"
+                    className="mt-0.5"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                  />
                   I certify the information is accurate and I agree to the{" "}
                   <a className="text-brand hover:underline">professional terms of service</a>.
                 </label>
@@ -304,21 +323,29 @@ function Join() {
             <div>
               <h2 className="text-xl font-bold">Professional Verification</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                To maintain our industrial standards, please upload the following documents for verification.
-                Our compliance team will review these within 24-48 hours.
+                To maintain our industrial standards, please upload the following documents for
+                verification. Our compliance team will review these within 24-48 hours.
               </p>
               <div className="mt-6 space-y-4">
                 <Dropzone
                   label="Government Issued ID (Passport, NIN, or Driver's License) *"
                   hint="PDF, JPG, PNG (Max 10MB)"
                 />
-                <FilePick label="Proof of Address *" placeholder="Upload utility bill or bank statement..." />
+                <FilePick
+                  label="Proof of Address *"
+                  placeholder="Upload utility bill or bank statement..."
+                />
                 <FilePick
                   label="Professional Certifications (Optional)"
                   placeholder="ISO, ASTM, or industry specific certs..."
                 />
                 <label className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <input type="checkbox" className="mt-0.5" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+                  <input
+                    type="checkbox"
+                    className="mt-0.5"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                  />
                   I certify that the information provided is accurate and I agree to the{" "}
                   <a className="text-brand hover:underline">professional terms of service</a>.
                 </label>
@@ -372,7 +399,10 @@ function Join() {
   );
 }
 
-function Field({ label, ...rest }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+function Field({
+  label,
+  ...rest
+}: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className="block">
       <span className="text-xs font-medium text-muted-foreground">{label}</span>

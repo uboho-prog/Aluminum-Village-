@@ -2,7 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Inbox, Mail, Phone, Wallet, CalendarClock, Send, Quote } from "lucide-react";
-import { useMyProfile, useMyRequests, respondToRequest, setRequestStatus } from "@/lib/platform-store";
+import {
+  useMyProfile,
+  useMyRequests,
+  respondToRequest,
+  setRequestStatus,
+} from "@/lib/platform-store";
 import type { ServiceRequest } from "@/lib/admin-models";
 import {
   AdminCard,
@@ -42,7 +47,8 @@ function AdminRequestsPage() {
       total: requests.length,
       newCount: requests.filter((r) => r.status === "New").length,
       quoted: requests.filter((r) => r.status === "Quoted").length,
-      won: requests.filter((r) => ["Accepted", "In Progress", "Completed"].includes(r.status)).length,
+      won: requests.filter((r) => ["Accepted", "In Progress", "Completed"].includes(r.status))
+        .length,
     };
   }, [requests]);
 
@@ -92,7 +98,10 @@ function AdminRequestsPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      <PageHeader title="Service Requests" description="See who wants your services and respond with a quote." />
+      <PageHeader
+        title="Service Requests"
+        description="See who wants your services and respond with a quote."
+      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="TOTAL" value={stats.total} icon={Inbox} tone="sky" />
@@ -121,7 +130,9 @@ function AdminRequestsPage() {
                   </div>
                   <p className="mt-1 text-sm text-slate-300">{r.message}</p>
                   <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-slate-400">
-                    <span className="inline-flex items-center gap-1.5 font-semibold text-slate-200">{r.clientName}</span>
+                    <span className="inline-flex items-center gap-1.5 font-semibold text-slate-200">
+                      {r.clientName}
+                    </span>
                     <span className="inline-flex items-center gap-1.5">
                       <Mail className="size-3.5" /> {r.clientEmail}
                     </span>
@@ -139,7 +150,9 @@ function AdminRequestsPage() {
                   {r.quote && (
                     <div className="mt-3 rounded-lg border border-slate-700 bg-slate-800/50 p-3">
                       <div className="flex items-center justify-between">
-                        <div className="text-[11px] font-bold tracking-wider text-slate-400">YOUR QUOTE</div>
+                        <div className="text-[11px] font-bold tracking-wider text-slate-400">
+                          YOUR QUOTE
+                        </div>
                         <StatusPill status={r.quote.status} />
                       </div>
                       <div className="mt-1 text-lg font-bold text-white">{r.quote.amount}</div>
@@ -157,11 +170,19 @@ function AdminRequestsPage() {
                   </PrimaryButton>
                   {r.status !== "Completed" && r.status !== "Cancelled" && (
                     <>
-                      <GhostButton onClick={() => (setRequestStatus(r.id, "In Progress"), toast.success("Marked in progress."))}>
+                      <GhostButton
+                        onClick={() => (
+                          setRequestStatus(r.id, "In Progress"),
+                          toast.success("Marked in progress.")
+                        )}
+                      >
                         Mark In Progress
                       </GhostButton>
                       <button
-                        onClick={() => (setRequestStatus(r.id, "Cancelled"), toast("Request declined."))}
+                        onClick={() => (
+                          setRequestStatus(r.id, "Cancelled"),
+                          toast("Request declined.")
+                        )}
                         className="text-xs font-semibold text-rose-400 hover:underline"
                       >
                         Decline
@@ -193,11 +214,19 @@ function AdminRequestsPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <FieldLabel>Amount (₦)</FieldLabel>
-              <TextInput value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="₦720,000" />
+              <TextInput
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="₦720,000"
+              />
             </div>
             <div>
               <FieldLabel>Delivery Time</FieldLabel>
-              <TextInput value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} placeholder="2 weeks" />
+              <TextInput
+                value={deliveryTime}
+                onChange={(e) => setDeliveryTime(e.target.value)}
+                placeholder="2 weeks"
+              />
             </div>
           </div>
           <div>

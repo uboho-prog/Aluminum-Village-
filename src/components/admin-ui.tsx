@@ -21,11 +21,26 @@ const TONE_CLASS: Record<Tone, string> = {
 
 function toneForStatus(status: string): Tone {
   const s = status.toLowerCase();
-  if (["active", "approved", "completed", "released", "paid", "delivered", "available", "success"].some((k) => s.includes(k)))
+  if (
+    [
+      "active",
+      "approved",
+      "completed",
+      "released",
+      "paid",
+      "delivered",
+      "available",
+      "success",
+    ].some((k) => s.includes(k))
+  )
     return "emerald";
   if (["reject", "refund", "cancel", "fail", "dispute", "offline"].some((k) => s.includes(k)))
     return "rose";
-  if (["pending", "escrow", "review", "processing", "busy", "new", "quoted", "initiated"].some((k) => s.includes(k)))
+  if (
+    ["pending", "escrow", "review", "processing", "busy", "new", "quoted", "initiated"].some((k) =>
+      s.includes(k),
+    )
+  )
     return "amber";
   if (["confirm", "shipped", "progress", "discussion"].some((k) => s.includes(k))) return "sky";
   return "slate";

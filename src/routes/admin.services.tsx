@@ -168,7 +168,10 @@ function AdminServicesPage() {
               <p className="mt-1.5 text-sm text-slate-400 line-clamp-3">{svc.description}</p>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {svc.features.map((f) => (
-                  <span key={f} className="rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">
+                  <span
+                    key={f}
+                    className="rounded-md border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300"
+                  >
                     {f}
                   </span>
                 ))}
@@ -252,7 +255,12 @@ function AdminServicesPage() {
               <FieldLabel>Status</FieldLabel>
               <SelectInput
                 value={form.status}
-                onChange={(e) => setForm((s) => ({ ...s, status: e.target.value as ProfessionalService["status"] }))}
+                onChange={(e) =>
+                  setForm((s) => ({
+                    ...s,
+                    status: e.target.value as ProfessionalService["status"],
+                  }))
+                }
               >
                 {STATUSES.map((st) => (
                   <option key={st} value={st}>
@@ -267,7 +275,12 @@ function AdminServicesPage() {
               <FieldLabel>Pricing</FieldLabel>
               <SelectInput
                 value={form.priceType}
-                onChange={(e) => setForm((s) => ({ ...s, priceType: e.target.value as ProfessionalService["priceType"] }))}
+                onChange={(e) =>
+                  setForm((s) => ({
+                    ...s,
+                    priceType: e.target.value as ProfessionalService["priceType"],
+                  }))
+                }
               >
                 {PRICE_TYPES.map((pt) => (
                   <option key={pt} value={pt}>
@@ -304,7 +317,9 @@ function AdminServicesPage() {
                   {f}
                   <button
                     type="button"
-                    onClick={() => setForm((s) => ({ ...s, features: s.features.filter((x) => x !== f) }))}
+                    onClick={() =>
+                      setForm((s) => ({ ...s, features: s.features.filter((x) => x !== f) }))
+                    }
                     className="text-slate-400 hover:text-rose-400"
                   >
                     <X className="size-3" />

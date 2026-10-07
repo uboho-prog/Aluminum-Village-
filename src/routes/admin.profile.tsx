@@ -48,7 +48,8 @@ function AdminProfilePage() {
   const [headline, setHeadline] = useState("");
   const [location, setLocation] = useState("");
   const [hourlyRate, setHourlyRate] = useState("");
-  const [availability, setAvailability] = useState<ProfessionalProfile["availability"]>("Available");
+  const [availability, setAvailability] =
+    useState<ProfessionalProfile["availability"]>("Available");
   const [responseTime, setResponseTime] = useState("");
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -136,8 +137,18 @@ function AdminProfilePage() {
 
       {profile && (
         <div className="grid gap-4 sm:grid-cols-3">
-          <StatCard label="RATING" value={profile.rating ? `${profile.rating} ★` : "New"} icon={Star} tone="amber" />
-          <StatCard label="COMPLETED JOBS" value={profile.completedJobs} icon={CheckCircle2} tone="emerald" />
+          <StatCard
+            label="RATING"
+            value={profile.rating ? `${profile.rating} ★` : "New"}
+            icon={Star}
+            tone="amber"
+          />
+          <StatCard
+            label="COMPLETED JOBS"
+            value={profile.completedJobs}
+            icon={CheckCircle2}
+            tone="emerald"
+          />
           <StatCard label="REVIEWS" value={profile.reviews} icon={Briefcase} tone="sky" />
         </div>
       )}
@@ -149,11 +160,19 @@ function AdminProfilePage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <FieldLabel>Full Name</FieldLabel>
-                <TextInput value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Chidi Okonkwo" />
+                <TextInput
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Chidi Okonkwo"
+                />
               </div>
               <div>
                 <FieldLabel>Location</FieldLabel>
-                <TextInput value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Lagos, NG" />
+                <TextInput
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Lagos, NG"
+                />
               </div>
             </div>
 
@@ -169,13 +188,19 @@ function AdminProfilePage() {
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
                 <FieldLabel>Hourly Rate (₦)</FieldLabel>
-                <TextInput value={hourlyRate} onChange={(e) => setHourlyRate(e.target.value)} placeholder="₦35,000" />
+                <TextInput
+                  value={hourlyRate}
+                  onChange={(e) => setHourlyRate(e.target.value)}
+                  placeholder="₦35,000"
+                />
               </div>
               <div>
                 <FieldLabel>Availability</FieldLabel>
                 <SelectInput
                   value={availability}
-                  onChange={(e) => setAvailability(e.target.value as ProfessionalProfile["availability"])}
+                  onChange={(e) =>
+                    setAvailability(e.target.value as ProfessionalProfile["availability"])
+                  }
                 >
                   {AVAILABILITY.map((a) => (
                     <option key={a} value={a}>
@@ -222,7 +247,9 @@ function AdminProfilePage() {
                     </button>
                   </span>
                 ))}
-                {skills.length === 0 && <span className="text-xs text-slate-500">No skills added yet.</span>}
+                {skills.length === 0 && (
+                  <span className="text-xs text-slate-500">No skills added yet.</span>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <TextInput
@@ -241,18 +268,27 @@ function AdminProfilePage() {
             <div>
               <div className="flex items-center justify-between">
                 <FieldLabel>Portfolio</FieldLabel>
-                <button type="button" onClick={addPortfolioItem} className="text-xs font-semibold text-[#4d8dff] hover:underline">
+                <button
+                  type="button"
+                  onClick={addPortfolioItem}
+                  className="text-xs font-semibold text-[#4d8dff] hover:underline"
+                >
                   <Plus className="inline size-3.5" /> Add item
                 </button>
               </div>
               <div className="space-y-3">
                 {portfolio.map((item, i) => (
-                  <div key={item.id} className="rounded-lg border border-slate-700 bg-slate-800/40 p-3 space-y-2">
+                  <div
+                    key={item.id}
+                    className="rounded-lg border border-slate-700 bg-slate-800/40 p-3 space-y-2"
+                  >
                     <div className="flex items-center gap-2">
                       <TextInput
                         value={item.title}
                         onChange={(e) =>
-                          setPortfolio((prev) => prev.map((p, j) => (j === i ? { ...p, title: e.target.value } : p)))
+                          setPortfolio((prev) =>
+                            prev.map((p, j) => (j === i ? { ...p, title: e.target.value } : p)),
+                          )
                         }
                         placeholder="Project title"
                       />
@@ -268,7 +304,9 @@ function AdminProfilePage() {
                       rows={2}
                       value={item.description}
                       onChange={(e) =>
-                        setPortfolio((prev) => prev.map((p, j) => (j === i ? { ...p, description: e.target.value } : p)))
+                        setPortfolio((prev) =>
+                          prev.map((p, j) => (j === i ? { ...p, description: e.target.value } : p)),
+                        )
                       }
                       placeholder="What did you deliver?"
                     />
@@ -306,15 +344,26 @@ function AdminProfilePage() {
               >
                 <ImagePlus className="size-3.5" /> Change photo
               </button>
-              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onAvatarFile} />
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={onAvatarFile}
+              />
               <div className="mt-3 text-base font-bold text-white">{fullName || "Your Name"}</div>
-              <div className="text-xs text-[#4d8dff] font-medium">{headline || "Your headline"}</div>
+              <div className="text-xs text-[#4d8dff] font-medium">
+                {headline || "Your headline"}
+              </div>
               <div className="mt-1 text-xs text-slate-400">{location || "Location"}</div>
               <div className="mt-3">
                 <StatusPill status={availability} />
               </div>
               {hourlyRate && (
-                <div className="mt-3 text-sm font-semibold text-white">{hourlyRate}<span className="text-xs text-slate-500">/hr</span></div>
+                <div className="mt-3 text-sm font-semibold text-white">
+                  {hourlyRate}
+                  <span className="text-xs text-slate-500">/hr</span>
+                </div>
               )}
             </div>
           </AdminCard>

@@ -74,9 +74,7 @@ function DirectoryMenu() {
             <UserPlus className="size-4 text-brand mt-0.5 shrink-0" />
             <div>
               <div className="text-sm font-semibold">Join as a Professional</div>
-              <div className="text-xs text-muted-foreground mt-0.5">
-                Register your business
-              </div>
+              <div className="text-xs text-muted-foreground mt-0.5">Register your business</div>
             </div>
           </Link>
         </div>
@@ -129,11 +127,26 @@ function AccountMenu() {
                   <div className="border-t" />
                 </>
               )}
-              <MenuLink to="/dashboard" icon={LayoutDashboard} title="My Account" desc="Profile, addresses & payment" />
+              <MenuLink
+                to="/dashboard"
+                icon={LayoutDashboard}
+                title="My Account"
+                desc="Profile, addresses & payment"
+              />
               <div className="border-t" />
-              <MenuLink to="/tracking" icon={Package} title="Orders" desc="Track deliveries & history" />
+              <MenuLink
+                to="/tracking"
+                icon={Package}
+                title="Orders"
+                desc="Track deliveries & history"
+              />
               <div className="border-t" />
-              <MenuLink to="/marketplace" icon={Heart} title="Saved Items" desc="Your wishlist & bookmarks" />
+              <MenuLink
+                to="/marketplace"
+                icon={Heart}
+                title="Saved Items"
+                desc="Your wishlist & bookmarks"
+              />
               <div className="border-t" />
               <button
                 type="button"
@@ -158,7 +171,9 @@ function AccountMenu() {
                 <LogIn className="size-4 text-brand mt-0.5 shrink-0" />
                 <div>
                   <div className="text-sm font-semibold">Sign In</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">Access your account & orders</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    Access your account & orders
+                  </div>
                 </div>
               </Link>
               <div className="border-t" />
@@ -169,7 +184,9 @@ function AccountMenu() {
                 <UserPlus className="size-4 text-brand mt-0.5 shrink-0" />
                 <div>
                   <div className="text-sm font-semibold">Create Account</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">Faster procurement & tracking</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    Faster procurement & tracking
+                  </div>
                 </div>
               </Link>
             </>
@@ -203,7 +220,10 @@ function MenuLink({
 }
 
 const notices = [
-  { icon: Truck, text: "Nationwide delivery on bulk orders in Lagos, Abuja, Port Harcourt & Ibadan" },
+  {
+    icon: Truck,
+    text: "Nationwide delivery on bulk orders in Lagos, Abuja, Port Harcourt & Ibadan",
+  },
   { icon: ShieldCheck, text: "Escrow-protected payments on every verified order" },
   { icon: BadgeCheck, text: "320+ verified fabricators, suppliers and installers onboard" },
   { icon: Sparkles, text: "New: bulk extrusion pricing for contractors & developers" },
@@ -348,7 +368,10 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 ["Feedback", "/contact"],
               ].map(([l, to]) => (
                 <li key={l}>
-                  <Link to={to as string} className="text-sm text-muted-foreground hover:text-foreground">
+                  <Link
+                    to={to as string}
+                    className="text-sm text-muted-foreground hover:text-foreground"
+                  >
                     {l}
                   </Link>
                 </li>
@@ -365,7 +388,10 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 ["Shipping Info", "/about"],
               ].map(([l, to]) => (
                 <li key={l}>
-                  <Link to={to as string} className="text-sm text-muted-foreground hover:text-foreground">
+                  <Link
+                    to={to as string}
+                    className="text-sm text-muted-foreground hover:text-foreground"
+                  >
                     {l}
                   </Link>
                 </li>
@@ -374,9 +400,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </div>
           <div>
             <div className="text-sm font-semibold mb-3">Stay Connected</div>
-            <p className="text-xs text-muted-foreground mb-3">
-              Lagos · Abuja · Port Harcourt
-            </p>
+            <p className="text-xs text-muted-foreground mb-3">Lagos · Abuja · Port Harcourt</p>
             <Link
               to="/join"
               className="inline-flex rounded-md border bg-background px-3 py-2 text-xs font-medium hover:bg-secondary"

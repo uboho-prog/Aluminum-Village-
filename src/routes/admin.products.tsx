@@ -15,15 +15,7 @@ import {
   ShoppingBag,
   AlertTriangle,
 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { useAuthUser } from "@/lib/auth-store";
 import {
   useMyProducts,
@@ -129,12 +121,16 @@ function AdminProductsPage() {
     name: form.name.trim(),
     description: form.description.trim(),
     category: form.category,
-    price: form.price.trim().startsWith("₦") ? form.price.trim() : formatNaira(parseNaira(form.price)),
+    price: form.price.trim().startsWith("₦")
+      ? form.price.trim()
+      : formatNaira(parseNaira(form.price)),
     unit: form.unit,
     stock: Number(form.stock) || 0,
     minOrder: Number(form.minOrder) || 1,
     specifications: Object.fromEntries(
-      form.specs.filter((s) => s.key.trim() && s.value.trim()).map((s) => [s.key.trim(), s.value.trim()]),
+      form.specs
+        .filter((s) => s.key.trim() && s.value.trim())
+        .map((s) => [s.key.trim(), s.value.trim()]),
     ),
     images: form.images,
   });
@@ -244,7 +240,9 @@ function AdminProductsPage() {
                         className="size-10 rounded-md object-cover bg-slate-700 shrink-0"
                       />
                       <div className="min-w-0">
-                        <div className="font-semibold text-white truncate max-w-[220px]">{p.name}</div>
+                        <div className="font-semibold text-white truncate max-w-[220px]">
+                          {p.name}
+                        </div>
                         {p.status === "Draft" && p.rejectionReason && (
                           <div className="flex items-center gap-1 text-[11px] text-amber-400">
                             <AlertTriangle className="size-3" /> Changes requested
@@ -297,12 +295,35 @@ function AdminProductsPage() {
       ) : (
         <div className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard label="TOTAL VIEWS" value={totals.views.toLocaleString()} icon={Eye} tone="sky" />
-            <StatCard label="INQUIRIES" value={totals.inquiries.toLocaleString()} icon={MessageSquare} tone="violet" />
-            <StatCard label="ORDERS" value={totals.orders.toLocaleString()} icon={ShoppingBag} tone="emerald" />
-            <StatCard label="REVENUE" value={formatNaira(totals.revenue)} icon={TrendingUp} tone="amber" />
+            <StatCard
+              label="TOTAL VIEWS"
+              value={totals.views.toLocaleString()}
+              icon={Eye}
+              tone="sky"
+            />
+            <StatCard
+              label="INQUIRIES"
+              value={totals.inquiries.toLocaleString()}
+              icon={MessageSquare}
+              tone="violet"
+            />
+            <StatCard
+              label="ORDERS"
+              value={totals.orders.toLocaleString()}
+              icon={ShoppingBag}
+              tone="emerald"
+            />
+            <StatCard
+              label="REVENUE"
+              value={formatNaira(totals.revenue)}
+              icon={TrendingUp}
+              tone="amber"
+            />
           </div>
-          <AdminCard title="How your products are doing" subtitle="Orders and revenue (₦'000) by product">
+          <AdminCard
+            title="How your products are doing"
+            subtitle="Orders and revenue (₦'000) by product"
+          >
             {chartData.length === 0 ? (
               <EmptyState icon={TrendingUp} title="No performance data yet" />
             ) : (
@@ -310,7 +331,13 @@ function AdminProductsPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-                    <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} />
+                    <XAxis
+                      dataKey="name"
+                      stroke="#94a3b8"
+                      fontSize={11}
+                      tickLine={false}
+                      axisLine={false}
+                    />
                     <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} />
                     <Tooltip
                       contentStyle={{
@@ -323,7 +350,12 @@ function AdminProductsPage() {
                       cursor={{ fill: "rgba(148,163,184,0.08)" }}
                     />
                     <Bar dataKey="orders" fill="#0b50c4" radius={[4, 4, 0, 0]} name="Orders" />
-                    <Bar dataKey="revenue" fill="#a855f7" radius={[4, 4, 0, 0]} name="Revenue (₦'000)" />
+                    <Bar
+                      dataKey="revenue"
+                      fill="#a855f7"
+                      radius={[4, 4, 0, 0]}
+                      name="Revenue (₦'000)"
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -419,7 +451,10 @@ function ProductModal({
           </div>
           <div>
             <FieldLabel>Unit</FieldLabel>
-            <SelectInput value={form.unit} onChange={(e) => setForm((f) => ({ ...f, unit: e.target.value }))}>
+            <SelectInput
+              value={form.unit}
+              onChange={(e) => setForm((f) => ({ ...f, unit: e.target.value }))}
+            >
               {UNITS.map((u) => (
                 <option key={u} value={u}>
                   {u}
@@ -497,7 +532,9 @@ function ProductModal({
                 />
                 <button
                   type="button"
-                  onClick={() => setForm((f) => ({ ...f, specs: f.specs.filter((_, j) => j !== i) }))}
+                  onClick={() =>
+                    setForm((f) => ({ ...f, specs: f.specs.filter((_, j) => j !== i) }))
+                  }
                   className="rounded-md p-2 text-slate-400 hover:bg-slate-700 hover:text-rose-400"
                   aria-label="Remove spec"
                 >
@@ -507,7 +544,9 @@ function ProductModal({
             ))}
             <button
               type="button"
-              onClick={() => setForm((f) => ({ ...f, specs: [...f.specs, { key: "", value: "" }] }))}
+              onClick={() =>
+                setForm((f) => ({ ...f, specs: [...f.specs, { key: "", value: "" }] }))
+              }
               className="text-xs font-semibold text-[#4d8dff] hover:underline"
             >
               + Add specification
@@ -521,11 +560,16 @@ function ProductModal({
           {form.images.length > 0 && (
             <div className="mb-3 flex flex-wrap gap-2">
               {form.images.map((src, i) => (
-                <div key={i} className="relative size-20 overflow-hidden rounded-lg border border-slate-700">
+                <div
+                  key={i}
+                  className="relative size-20 overflow-hidden rounded-lg border border-slate-700"
+                >
                   <img src={src} alt="" className="size-full object-cover" />
                   <button
                     type="button"
-                    onClick={() => setForm((f) => ({ ...f, images: f.images.filter((_, j) => j !== i) }))}
+                    onClick={() =>
+                      setForm((f) => ({ ...f, images: f.images.filter((_, j) => j !== i) }))
+                    }
                     className="absolute right-1 top-1 grid size-5 place-items-center rounded-full bg-black/70 text-white hover:bg-rose-500"
                     aria-label="Remove image"
                   >
@@ -551,7 +595,13 @@ function ProductModal({
             <GhostButton type="button" onClick={() => fileRef.current?.click()}>
               <ImagePlus className="size-4" /> Upload
             </GhostButton>
-            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFile} />
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={onFile}
+            />
           </div>
         </div>
       </div>

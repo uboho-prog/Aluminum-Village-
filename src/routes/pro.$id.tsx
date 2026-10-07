@@ -21,7 +21,10 @@ export const Route = createFileRoute("/pro/$id")({
   head: () => ({
     meta: [
       { title: "Professional Profile | Aluminium Village" },
-      { name: "description", content: "View a verified professional's profile and request their services." },
+      {
+        name: "description",
+        content: "View a verified professional's profile and request their services.",
+      },
     ],
   }),
   component: ProProfilePage,
@@ -41,7 +44,10 @@ function ProProfilePage() {
         <section className="mx-auto max-w-2xl px-4 sm:px-6 py-20 text-center">
           <h1 className="text-2xl font-bold">Professional not found</h1>
           <p className="mt-2 text-muted-foreground">This profile may have been removed.</p>
-          <Link to="/directory" className="mt-6 inline-flex items-center gap-2 text-brand font-semibold hover:underline">
+          <Link
+            to="/directory"
+            className="mt-6 inline-flex items-center gap-2 text-brand font-semibold hover:underline"
+          >
             <ArrowLeft className="size-4" /> Back to directory
           </Link>
         </section>
@@ -52,7 +58,10 @@ function ProProfilePage() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
-        <Link to="/directory" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">
+        <Link
+          to="/directory"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+        >
           <ArrowLeft className="size-4" /> Directory
         </Link>
 
@@ -101,7 +110,9 @@ function ProProfilePage() {
             </div>
           </div>
 
-          {pro.bio && <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{pro.bio}</p>}
+          {pro.bio && (
+            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{pro.bio}</p>
+          )}
 
           {pro.skills.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -119,7 +130,9 @@ function ProProfilePage() {
           <div>
             <h2 className="text-xl font-bold">Services</h2>
             {pro.services.length === 0 ? (
-              <p className="mt-3 text-sm text-muted-foreground">This professional hasn't listed services yet.</p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                This professional hasn't listed services yet.
+              </p>
             ) : (
               <div className="mt-4 space-y-4">
                 {pro.services
@@ -138,7 +151,10 @@ function ProProfilePage() {
                       </div>
                       <div className="mt-3 flex flex-wrap items-center gap-2">
                         {svc.features.map((f) => (
-                          <span key={f} className="rounded-md border bg-background px-2 py-0.5 text-[11px]">
+                          <span
+                            key={f}
+                            className="rounded-md border bg-background px-2 py-0.5 text-[11px]"
+                          >
                             {f}
                           </span>
                         ))}
@@ -171,7 +187,11 @@ function ProProfilePage() {
                   <div key={item.id} className="rounded-xl border bg-card overflow-hidden">
                     {item.images[0] && (
                       <div className="aspect-video bg-secondary">
-                        <img src={item.images[0]} alt={item.title} className="size-full object-cover" />
+                        <img
+                          src={item.images[0]}
+                          alt={item.title}
+                          className="size-full object-cover"
+                        />
                       </div>
                     )}
                     <div className="p-4">
@@ -181,7 +201,9 @@ function ProProfilePage() {
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">{item.description}</p>
                       {item.clientFeedback && (
-                        <p className="mt-2 text-xs italic text-muted-foreground">"{item.clientFeedback}"</p>
+                        <p className="mt-2 text-xs italic text-muted-foreground">
+                          "{item.clientFeedback}"
+                        </p>
                       )}
                     </div>
                   </div>
@@ -236,7 +258,12 @@ function RequestModal({
     createServiceRequest({
       professionalId: pro.id,
       professionalName: pro.fullName,
-      client: { id: `USR-${Date.now().toString(36)}`, name: name.trim(), email: email.trim(), phone: phone.trim() },
+      client: {
+        id: `USR-${Date.now().toString(36)}`,
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+      },
       serviceId,
       serviceTitle: svc?.title ?? "General enquiry",
       message: message.trim(),
@@ -247,7 +274,8 @@ function RequestModal({
     onClose();
   };
 
-  const field = "mt-1 w-full rounded-md border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand";
+  const field =
+    "mt-1 w-full rounded-md border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand";
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:p-6">
@@ -258,7 +286,11 @@ function RequestModal({
             <h3 className="text-lg font-bold">Request a Service</h3>
             <p className="text-sm text-muted-foreground">from {pro.fullName}</p>
           </div>
-          <button onClick={onClose} className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary" aria-label="Close">
+          <button
+            onClick={onClose}
+            className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary"
+            aria-label="Close"
+          >
             <X className="size-5" />
           </button>
         </div>
@@ -266,7 +298,11 @@ function RequestModal({
           {pro.services.length > 0 && (
             <label className="block">
               <span className="text-xs font-medium text-muted-foreground">Service</span>
-              <select value={serviceId} onChange={(e) => setServiceId(e.target.value)} className={field}>
+              <select
+                value={serviceId}
+                onChange={(e) => setServiceId(e.target.value)}
+                className={field}
+              >
                 {pro.services.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.title}
@@ -278,23 +314,49 @@ function RequestModal({
           <div className="grid sm:grid-cols-2 gap-4">
             <label className="block">
               <span className="text-xs font-medium text-muted-foreground">Your Name</span>
-              <input value={name} onChange={(e) => setName(e.target.value)} className={field} placeholder="Jane Doe" />
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={field}
+                placeholder="Jane Doe"
+              />
             </label>
             <label className="block">
               <span className="text-xs font-medium text-muted-foreground">Email</span>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={field} placeholder="you@company.com" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={field}
+                placeholder="you@company.com"
+              />
             </label>
             <label className="block">
               <span className="text-xs font-medium text-muted-foreground">Phone</span>
-              <input value={phone} onChange={(e) => setPhone(e.target.value)} className={field} placeholder="+234 ..." />
+              <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className={field}
+                placeholder="+234 ..."
+              />
             </label>
             <label className="block">
               <span className="text-xs font-medium text-muted-foreground">Budget</span>
-              <input value={budget} onChange={(e) => setBudget(e.target.value)} className={field} placeholder="₦ ..." />
+              <input
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                className={field}
+                placeholder="₦ ..."
+              />
             </label>
             <label className="block sm:col-span-2">
               <span className="text-xs font-medium text-muted-foreground">Timeline</span>
-              <input value={timeline} onChange={(e) => setTimeline(e.target.value)} className={field} placeholder="e.g. 4 weeks" />
+              <input
+                value={timeline}
+                onChange={(e) => setTimeline(e.target.value)}
+                className={field}
+                placeholder="e.g. 4 weeks"
+              />
             </label>
           </div>
           <label className="block">
@@ -308,7 +370,11 @@ function RequestModal({
             />
           </label>
           <div className="flex justify-end gap-2 pt-1">
-            <button type="button" onClick={onClose} className="rounded-md border bg-card px-4 py-2.5 text-sm font-medium hover:bg-secondary">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-md border bg-card px-4 py-2.5 text-sm font-medium hover:bg-secondary"
+            >
               Cancel
             </button>
             <button
