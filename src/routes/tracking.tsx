@@ -14,6 +14,7 @@ import {
   Phone,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useMyPurchases } from "@/lib/platform-store";
 
 export const Route = createFileRoute("/tracking")({
   head: () => ({
@@ -40,6 +41,7 @@ const steps = [
 function Tracking() {
   const currentStep = 3; // In Transit
   const [pulse, setPulse] = useState(0);
+  const myOrders = useMyPurchases();
 
   useEffect(() => {
     const id = setInterval(() => setPulse((p) => (p + 1) % 100), 50);
@@ -51,7 +53,9 @@ function Tracking() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Link to="/" className="hover:text-foreground">Orders</Link>
+          <Link to="/" className="hover:text-foreground">
+            Orders
+          </Link>
           <ChevronRight className="size-3.5" />
           <span className="text-foreground font-medium">Tracking #ALV-9821</span>
         </nav>
@@ -64,6 +68,34 @@ function Tracking() {
             Premium Grade Industrial Shipment in Transit
           </p>
         </div>
+
+        {myOrders.length > 0 && (
+          <div className="mt-8 rounded-2xl border bg-card p-6 shadow-sm">
+            <h2 className="text-lg font-bold">Your Orders</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Orders you've placed. Payment is held in escrow by Aluminium Village until released to
+              the vendor.
+            </p>
+            <div className="mt-4 divide-y">
+              {myOrders.map((o) => (
+                <div key={o.id} className="flex items-center justify-between gap-4 py-3">
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold">#{o.orderNumber}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {o.sellerName} · {new Date(o.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-sm font-bold">{o.total}</div>
+                    <div className="text-[11px] text-muted-foreground">
+                      {o.status} · {o.paymentStatus}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mt-8 grid lg:grid-cols-[1fr_360px] gap-6">
           {/* Left column */}
@@ -100,7 +132,11 @@ function Tracking() {
                         </span>
                         <span
                           className={`mt-2.5 text-xs sm:text-sm font-medium leading-tight ${
-                            active ? "text-brand font-semibold" : done ? "text-foreground" : "text-muted-foreground"
+                            active
+                              ? "text-brand font-semibold"
+                              : done
+                                ? "text-foreground"
+                                : "text-muted-foreground"
                           }`}
                         >
                           {s.label}
@@ -187,8 +223,18 @@ function Tracking() {
                 {/* Destination pin */}
                 <g transform="translate(740 80)">
                   <circle r="14" fill="white" opacity=".25">
-                    <animate attributeName="r" values="10;22;10" dur="2s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values=".4;0;.4" dur="2s" repeatCount="indefinite" />
+                    <animate
+                      attributeName="r"
+                      values="10;22;10"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      values=".4;0;.4"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
                   </circle>
                   <circle r="6" fill="white" />
                   <circle r="3" fill="hsl(var(--brand))" />
@@ -202,9 +248,7 @@ function Tracking() {
                     <span className="absolute inset-0 rounded-full bg-brand/40 animate-ping" />
                     <span className="relative size-2 rounded-full bg-brand" />
                   </span>
-                  <div className="text-sm font-semibold">
-                    Currently: Lagos–Ibadan Expressway
-                  </div>
+                  <div className="text-sm font-semibold">Currently: Lagos–Ibadan Expressway</div>
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground pl-5">
                   Last ping: 2 minutes ago via Satellite Link

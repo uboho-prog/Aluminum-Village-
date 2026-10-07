@@ -30,7 +30,7 @@ export function getAdminAccessPassword(): string {
 }
 
 const verifyInput = z.object({
-  role: z.enum(["business", "individual", "overall"]),
+  role: z.enum(["business", "professional", "overall"]),
   email: z.string().trim().min(1),
   password: z.string().min(1),
 });

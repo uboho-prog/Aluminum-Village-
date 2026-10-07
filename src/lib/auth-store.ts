@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-export type AdminRole = "business" | "individual" | "overall";
+export type AdminRole = "business" | "professional" | "overall";
 
 export type AuthUser = { name: string; email: string; role?: AdminRole } | null;
 
 export const ADMIN_ROLE_LABEL: Record<AdminRole, string> = {
   business: "Business Suite",
-  individual: "Individual Suite",
+  professional: "Professional Suite",
   overall: "Overall Admin",
 };
 const KEY = "av_auth_user";

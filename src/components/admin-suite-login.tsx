@@ -16,7 +16,7 @@ import { SUITE_META } from "@/lib/admin-access";
 import { verifyAdminAccess } from "@/lib/api/admin-access.server";
 
 /** Shared sign-in screen for one admin suite. The role is fixed per route:
- * /admin/login/business, /admin/login/individual, /admin/login/overall. */
+ * /admin/login/business, /admin/login/professional, /admin/login/overall. */
 export function AdminSuiteLogin({ role }: { role: AdminRole }) {
   const navigate = useNavigate();
   const meta = SUITE_META[role];

@@ -18,20 +18,52 @@ const SUITES = [
     key: "business",
     label: "Business Suite",
     email: "admin@business.aluminiumvillage.com",
-    // Which /admin sections each suite may open (mirror of ADMIN_NAV_ACCESS).
-    expect: { users: false, sellers: true, deals: true, analytics: true, settings: false },
+    // Which sidebar sections this suite may see — mirror of ADMIN_NAV_ACCESS.
+    nav: {
+      Products: true,
+      Sales: true,
+      Profile: false,
+      Services: false,
+      Approvals: false,
+      Payments: false,
+      Settings: false,
+    },
+    signature: "Post Product",
+    forbidden: "approvals",
   },
   {
-    key: "individual",
-    label: "Individual Suite",
-    email: "admin@individual.aluminiumvillage.com",
-    expect: { users: true, sellers: false, deals: false, analytics: true, settings: false },
+    key: "professional",
+    label: "Professional Suite",
+    email: "admin@professional.aluminiumvillage.com",
+    nav: {
+      Profile: true,
+      Services: true,
+      Requests: true,
+      Products: false,
+      Sales: false,
+      Approvals: false,
+      Payments: false,
+      Settings: false,
+    },
+    signature: "Professional Suite",
+    forbidden: "payments",
   },
   {
     key: "overall",
     label: "Overall Admin",
     email: "admin@aluminiumvillage.com",
-    expect: { users: true, sellers: true, deals: true, analytics: true, settings: true },
+    nav: {
+      Products: true,
+      Sales: true,
+      Profile: true,
+      Services: true,
+      Requests: true,
+      Approvals: true,
+      Payments: true,
+      Settings: true,
+    },
+    signature: "Needs attention",
+    forbidden: null,
   },
 ];
 
@@ -280,40 +312,28 @@ async function main() {
       )) === true,
     );
 
-    // Sidebar + dashboard content matrix.
+    // Dashboard content + sidebar visibility matrix.
     const bodyHas = (t) =>
-      safeEval(`return (document.body||{innerText:""}).innerText.includes("${t}")`);
-    for (const [section, expected] of Object.entries(suite.expect)) {
-      const label = {
-        users: "Users",
-        sellers: "Sellers",
-        deals: "Deals",
-        analytics: "Analytics",
-        settings: "Settings",
-      }[section];
+      safeEval(`return (document.body||{innerText:""}).innerText.includes(${JSON.stringify(t)})`);
+
+    record(`${k}: dashboard shows "${suite.signature}"`, await bodyHas(suite.signature));
+
+    for (const [label, expected] of Object.entries(suite.nav)) {
       const visible = await bodyHas(label);
       record(
-        `${k}: ${section} section ${expected ? "visible" : "hidden"}`,
+        `${k}: ${label} ${expected ? "visible" : "hidden"}`,
         visible === expected,
         `got ${visible}`,
       );
     }
-    if (suite.expect.deals) {
-      record(`${k}: Recent Deals table shown`, await bodyHas("Recent Deals"));
-      record(`${k}: Payment Generator shown`, await bodyHas("PAYMENT GENERATOR"));
-    } else {
-      record(`${k}: Recent Customers panel instead of deals`, await bodyHas("Recent Customers"));
-      record(`${k}: Payment Generator hidden`, !(await bodyHas("PAYMENT GENERATOR")));
-    }
 
     // Guard: a section this suite cannot open bounces back to /admin.
-    const forbidden = Object.entries(suite.expect).find(([, ok]) => !ok)?.[0];
-    if (forbidden) {
+    if (suite.forbidden) {
       step = `guard-${k}`;
-      await goto(`${BASE}/admin/${forbidden}`);
+      await goto(`${BASE}/admin/${suite.forbidden}`);
       await waitFor(`return location.pathname === "/admin"`, 10000).catch(() => {});
       record(
-        `${k}: /admin/${forbidden} bounces back to /admin`,
+        `${k}: /admin/${suite.forbidden} bounces back to /admin`,
         await waitFor(
           `return location.pathname === "/admin" && !!document.querySelector("h1")`,
           10000,

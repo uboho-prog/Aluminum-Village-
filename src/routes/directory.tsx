@@ -1,8 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { img } from "@/lib/images";
-import { BadgeCheck, MapPin, Search, Star, Trophy, Users2, ExternalLink, ArrowRight } from "lucide-react";
+import {
+  BadgeCheck,
+  MapPin,
+  Search,
+  Star,
+  Trophy,
+  Users2,
+  ExternalLink,
+  ArrowRight,
+} from "lucide-react";
 import { useState } from "react";
+import { useActiveProfessionals } from "@/lib/platform-store";
 
 export const Route = createFileRoute("/directory")({
   head: () => ({
@@ -17,36 +27,6 @@ export const Route = createFileRoute("/directory")({
   }),
   component: Directory,
 });
-
-const pros = [
-  {
-    img: img.pro1,
-    name: "Lagos Extrusion Hub",
-    type: "Fabricator",
-    rating: 4.9,
-    reviews: 128,
-    loc: "Lagos, NG",
-    tags: ["Precision Extrusions", "Industrial Frames"],
-  },
-  {
-    img: img.pro2,
-    name: "Abuja Pro Installers",
-    type: "Installers",
-    rating: 4.8,
-    reviews: 94,
-    loc: "Abuja, NG",
-    tags: ["Sliding Doors", "Glass Curtain Walls"],
-  },
-  {
-    img: img.pro3,
-    name: "Delta Metal Solutions",
-    type: "Suppliers",
-    rating: 4.7,
-    reviews: 215,
-    loc: "Asaba, NG",
-    tags: ["Raw Ingots", "Custom Alloys"],
-  },
-];
 
 const featured = [
   {
@@ -71,13 +51,16 @@ const filters = ["All", "Fabricators", "Suppliers", "Installers", "Specialized S
 
 function Directory() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const pros = useActiveProfessionals();
   return (
     <SiteLayout>
       {/* Hero */}
       <section className="bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Verified Aluminium<br />Professionals
+            Verified Aluminium
+            <br />
+            Professionals
           </h1>
           <p className="mt-4 max-w-2xl text-muted-foreground">
             Connect with Africa's leading fabricators, suppliers, and installation specialists.
@@ -126,37 +109,55 @@ function Directory() {
           </div>
 
           <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pros.length === 0 && (
+              <div className="col-span-full rounded-xl border bg-card p-10 text-center text-sm text-muted-foreground">
+                No professionals listed yet. Verified professionals will appear here.
+              </div>
+            )}
             {pros.map((p) => (
-              <article key={p.name} className="rounded-xl border bg-card p-5 group hover:shadow-md transition-shadow">
+              <article
+                key={p.id}
+                className="rounded-xl border bg-card p-5 group hover:shadow-md transition-shadow"
+              >
                 <div className="flex items-start justify-between gap-3">
                   <div className="size-14 rounded-md overflow-hidden bg-secondary shrink-0">
-                    <img src={p.img} alt={p.name} className="size-full object-cover" />
+                    <img src={p.avatar} alt={p.fullName} className="size-full object-cover" />
                   </div>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-semibold px-2 py-0.5">
-                    <BadgeCheck className="size-3" /> Verified
-                  </span>
+                  {p.verified && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-semibold px-2 py-0.5">
+                      <BadgeCheck className="size-3" /> Verified
+                    </span>
+                  )}
                 </div>
-                <h3 className="font-semibold mt-4">{p.name}</h3>
-                <div className="text-xs text-brand font-medium mt-0.5">{p.type}</div>
+                <h3 className="font-semibold mt-4">{p.fullName}</h3>
+                <div className="text-xs text-brand font-medium mt-0.5">{p.headline}</div>
                 <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Star className="size-3.5 fill-amber-500 text-amber-500" />
-                    <span className="text-foreground font-medium">{p.rating}</span> ({p.reviews})
+                    <span className="text-foreground font-medium">{p.rating || "New"}</span>
+                    {p.reviews > 0 && <span>({p.reviews})</span>}
                   </span>
                   <span className="flex items-center gap-1">
-                    <MapPin className="size-3.5" /> {p.loc}
+                    <MapPin className="size-3.5" /> {p.location}
                   </span>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  {p.tags.map((t) => (
-                    <span key={t} className="text-[11px] rounded-md border bg-background px-2 py-0.5">
+                  {p.skills.slice(0, 3).map((t) => (
+                    <span
+                      key={t}
+                      className="text-[11px] rounded-md border bg-background px-2 py-0.5"
+                    >
                       {t}
                     </span>
                   ))}
                 </div>
-                <button className="mt-5 w-full rounded-md border border-brand text-brand py-2 text-sm font-semibold hover:bg-brand hover:text-brand-foreground active:scale-[0.99] transition">
+                <Link
+                  to="/pro/$id"
+                  params={{ id: p.id }}
+                  className="mt-5 block w-full rounded-md border border-brand text-brand py-2 text-center text-sm font-semibold hover:bg-brand hover:text-brand-foreground active:scale-[0.99] transition"
+                >
                   View Profile
-                </button>
+                </Link>
               </article>
             ))}
           </div>

@@ -1,15 +1,30 @@
-import { Building2, User, Crown } from "lucide-react";
+import { Building2, UserCircle, Crown } from "lucide-react";
 import type { ComponentType } from "react";
 import type { AdminRole } from "@/lib/auth-store";
 
 /** Which admin suites can open each /admin section. Single source of truth
- * for the sidebar filter, route guard, and dashboard quick actions. */
+ * for the sidebar filter, route guard, and dashboard quick actions.
+ *
+ * Business = a vendor's workspace (post products, track sales).
+ * Professional = an individual's workspace (profile, services, requests).
+ * Overall = platform operator: sees everything, approves everyone, controls
+ * payments. */
 export const ADMIN_NAV_ACCESS: Record<string, AdminRole[]> = {
-  "/admin": ["business", "individual", "overall"],
-  "/admin/users": ["individual", "overall"],
-  "/admin/sellers": ["business", "overall"],
-  "/admin/deals": ["business", "overall"],
-  "/admin/analytics": ["business", "individual", "overall"],
+  "/admin": ["business", "professional", "overall"],
+  // Business suite
+  "/admin/products": ["business", "overall"],
+  "/admin/sales": ["business", "overall"],
+  // Professional suite
+  "/admin/profile": ["professional", "overall"],
+  "/admin/services": ["professional", "overall"],
+  "/admin/requests": ["professional", "overall"],
+  // Overall admin only
+  "/admin/approvals": ["overall"],
+  "/admin/payments": ["overall"],
+  "/admin/users": ["overall"],
+  "/admin/sellers": ["overall"],
+  "/admin/deals": ["overall"],
+  "/admin/analytics": ["overall"],
   "/admin/settings": ["overall"],
 };
 
@@ -32,25 +47,25 @@ export const SUITE_META: Record<
   business: {
     path: "/admin/login/business",
     icon: Building2,
-    blurb: "Sellers, deals and escrow oversight",
+    blurb: "Manage products, sales, and seller performance",
     emailPlaceholder: "you@business.aluminiumvillage.com",
     emailDomain: "business.aluminiumvillage.com",
     demoEmail: "demo@business.aluminiumvillage.com",
     demoPassword: "business-demo-2026",
   },
-  individual: {
-    path: "/admin/login/individual",
-    icon: User,
-    blurb: "Customers, orders and analytics",
-    emailPlaceholder: "you@individual.aluminiumvillage.com",
-    emailDomain: "individual.aluminiumvillage.com",
-    demoEmail: "demo@individual.aluminiumvillage.com",
-    demoPassword: "individual-demo-2026",
+  professional: {
+    path: "/admin/login/professional",
+    icon: UserCircle,
+    blurb: "Showcase your profile, services, and manage client requests",
+    emailPlaceholder: "you@professional.aluminiumvillage.com",
+    emailDomain: "professional.aluminiumvillage.com",
+    demoEmail: "demo@professional.aluminiumvillage.com",
+    demoPassword: "professional-demo-2026",
   },
   overall: {
     path: "/admin/login/overall",
     icon: Crown,
-    blurb: "Full platform control and settings",
+    blurb: "Full platform control: approvals, payments, and analytics",
     emailPlaceholder: "you@aluminiumvillage.com",
     emailDomain: "aluminiumvillage.com",
     demoEmail: "demo@aluminiumvillage.com",
@@ -65,7 +80,7 @@ export const SUITE_META: Record<
 
 /** Narrow an untrusted value (e.g. from localStorage) to a real AdminRole. */
 export function isAdminRole(value: unknown): value is AdminRole {
-  return value === "business" || value === "individual" || value === "overall";
+  return value === "business" || value === "professional" || value === "overall";
 }
 
 /** Does this email belong to the given suite's domain? */
